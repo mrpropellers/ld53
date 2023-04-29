@@ -1,4 +1,5 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -9,6 +10,7 @@ namespace LeftOut.LudumDare
     {
         Rigidbody m_Rigidbody;
         Vector2 m_MoveInput;
+        bool m_IsFlying;
 
         [SerializeField]
         InputActionReference MoveAction;
@@ -19,27 +21,40 @@ namespace LeftOut.LudumDare
 
         [SerializeField]
         float MaximumVelocity = 13.5f;
+        [SerializeField]
+        Vector2 MaximumTurnVelocity = new Vector2(30f, 30f);
+        //[SerializeField]
+        //AnimationCurve BeeAcceleration;
 
 
         // Start is called before the first frame update
         void Start()
         {
             m_Rigidbody = GetComponent<Rigidbody>();
+            m_IsFlying = false;
         }
 
         void Update()
         {
-            var direction = MoveAction.action.ReadValue<Vector2>();
-            Debug.Log($"Applying {direction} to self");
-            m_MoveInput = MaximumVelocity * direction;
+            var rotation = MoveAction.action.ReadValue<Vector2>() * Time.deltaTime;
+            rotation.Scale(MaximumTurnVelocity);
+            transform.Rotate(rotation.y, rotation.x, 0);
+            
+            if (m_IsFlying)
+            {
+                var displacement = MaximumVelocity * Time.deltaTime * transform.forward;
+                transform.position += displacement;
+            }
         }
 
-        void FixedUpdate()
+        public void OnThrottle()
         {
-            // rif (m_MoveInput.Equals(Vector2.zero))
-            // r    return;
-            // m_Rigidbody.velocity = m_MoveInput;
-            m_Rigidbody.velocity = Vector3.forward;
+            Debug.Log("It happened!");
+            // Debug.Log($"Throttle performed: {context.performed} - Toggling isFlying: {m_IsFlying}");
+            // if (context.performed)
+            // {
+            m_IsFlying = !m_IsFlying;
+            // }
         }
     }
 }
