@@ -24,7 +24,7 @@ public partial class @StarterAssets: IInputActionCollection2, IDisposable
     ""name"": ""StarterAssets"",
     ""maps"": [
         {
-            ""name"": ""Player"",
+            ""name"": ""BeeFlight"",
             ""id"": ""f62a4b92-ef5e-4175-8f4c-c9075429d32c"",
             ""actions"": [
                 {
@@ -294,12 +294,12 @@ public partial class @StarterAssets: IInputActionCollection2, IDisposable
         }
     ]
 }");
-        // Player
-        m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
-        m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
-        m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
-        m_Player_Throttle = m_Player.FindAction("Throttle", throwIfNotFound: true);
-        m_Player_Sprint = m_Player.FindAction("Sprint", throwIfNotFound: true);
+        // BeeFlight
+        m_BeeFlight = asset.FindActionMap("BeeFlight", throwIfNotFound: true);
+        m_BeeFlight_Move = m_BeeFlight.FindAction("Move", throwIfNotFound: true);
+        m_BeeFlight_Look = m_BeeFlight.FindAction("Look", throwIfNotFound: true);
+        m_BeeFlight_Throttle = m_BeeFlight.FindAction("Throttle", throwIfNotFound: true);
+        m_BeeFlight_Sprint = m_BeeFlight.FindAction("Sprint", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -358,30 +358,30 @@ public partial class @StarterAssets: IInputActionCollection2, IDisposable
         return asset.FindBinding(bindingMask, out action);
     }
 
-    // Player
-    private readonly InputActionMap m_Player;
-    private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
-    private readonly InputAction m_Player_Move;
-    private readonly InputAction m_Player_Look;
-    private readonly InputAction m_Player_Throttle;
-    private readonly InputAction m_Player_Sprint;
-    public struct PlayerActions
+    // BeeFlight
+    private readonly InputActionMap m_BeeFlight;
+    private List<IBeeFlightActions> m_BeeFlightActionsCallbackInterfaces = new List<IBeeFlightActions>();
+    private readonly InputAction m_BeeFlight_Move;
+    private readonly InputAction m_BeeFlight_Look;
+    private readonly InputAction m_BeeFlight_Throttle;
+    private readonly InputAction m_BeeFlight_Sprint;
+    public struct BeeFlightActions
     {
         private @StarterAssets m_Wrapper;
-        public PlayerActions(@StarterAssets wrapper) { m_Wrapper = wrapper; }
-        public InputAction @Move => m_Wrapper.m_Player_Move;
-        public InputAction @Look => m_Wrapper.m_Player_Look;
-        public InputAction @Throttle => m_Wrapper.m_Player_Throttle;
-        public InputAction @Sprint => m_Wrapper.m_Player_Sprint;
-        public InputActionMap Get() { return m_Wrapper.m_Player; }
+        public BeeFlightActions(@StarterAssets wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Move => m_Wrapper.m_BeeFlight_Move;
+        public InputAction @Look => m_Wrapper.m_BeeFlight_Look;
+        public InputAction @Throttle => m_Wrapper.m_BeeFlight_Throttle;
+        public InputAction @Sprint => m_Wrapper.m_BeeFlight_Sprint;
+        public InputActionMap Get() { return m_Wrapper.m_BeeFlight; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
         public bool enabled => Get().enabled;
-        public static implicit operator InputActionMap(PlayerActions set) { return set.Get(); }
-        public void AddCallbacks(IPlayerActions instance)
+        public static implicit operator InputActionMap(BeeFlightActions set) { return set.Get(); }
+        public void AddCallbacks(IBeeFlightActions instance)
         {
-            if (instance == null || m_Wrapper.m_PlayerActionsCallbackInterfaces.Contains(instance)) return;
-            m_Wrapper.m_PlayerActionsCallbackInterfaces.Add(instance);
+            if (instance == null || m_Wrapper.m_BeeFlightActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_BeeFlightActionsCallbackInterfaces.Add(instance);
             @Move.started += instance.OnMove;
             @Move.performed += instance.OnMove;
             @Move.canceled += instance.OnMove;
@@ -396,7 +396,7 @@ public partial class @StarterAssets: IInputActionCollection2, IDisposable
             @Sprint.canceled += instance.OnSprint;
         }
 
-        private void UnregisterCallbacks(IPlayerActions instance)
+        private void UnregisterCallbacks(IBeeFlightActions instance)
         {
             @Move.started -= instance.OnMove;
             @Move.performed -= instance.OnMove;
@@ -412,21 +412,21 @@ public partial class @StarterAssets: IInputActionCollection2, IDisposable
             @Sprint.canceled -= instance.OnSprint;
         }
 
-        public void RemoveCallbacks(IPlayerActions instance)
+        public void RemoveCallbacks(IBeeFlightActions instance)
         {
-            if (m_Wrapper.m_PlayerActionsCallbackInterfaces.Remove(instance))
+            if (m_Wrapper.m_BeeFlightActionsCallbackInterfaces.Remove(instance))
                 UnregisterCallbacks(instance);
         }
 
-        public void SetCallbacks(IPlayerActions instance)
+        public void SetCallbacks(IBeeFlightActions instance)
         {
-            foreach (var item in m_Wrapper.m_PlayerActionsCallbackInterfaces)
+            foreach (var item in m_Wrapper.m_BeeFlightActionsCallbackInterfaces)
                 UnregisterCallbacks(item);
-            m_Wrapper.m_PlayerActionsCallbackInterfaces.Clear();
+            m_Wrapper.m_BeeFlightActionsCallbackInterfaces.Clear();
             AddCallbacks(instance);
         }
     }
-    public PlayerActions @Player => new PlayerActions(this);
+    public BeeFlightActions @BeeFlight => new BeeFlightActions(this);
     private int m_KeyboardMouseSchemeIndex = -1;
     public InputControlScheme KeyboardMouseScheme
     {
@@ -463,7 +463,7 @@ public partial class @StarterAssets: IInputActionCollection2, IDisposable
             return asset.controlSchemes[m_PS4ControllerSchemeIndex];
         }
     }
-    public interface IPlayerActions
+    public interface IBeeFlightActions
     {
         void OnMove(InputAction.CallbackContext context);
         void OnLook(InputAction.CallbackContext context);

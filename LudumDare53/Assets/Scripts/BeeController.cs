@@ -9,18 +9,23 @@ namespace LeftOut.LudumDare
     public class BeeController : MonoBehaviour
     {
         Rigidbody m_Rigidbody;
+        BeeSensorProcessor m_FlowerSensor;
         Vector2 m_MoveInput;
         bool m_IsFlying;
 
         [SerializeField]
         InputActionReference MoveAction;
+        [SerializeField]
+        InputActionReference ThrottleAction;
 
         // [SerializeField]
         // [Min(10f)]
         // float Acceleration = 40f;
 
         [SerializeField]
-        float MaximumVelocity = 13.5f;
+        float BaseSpeed = 5f;
+        [SerializeField]
+        float CruisingSpeed = 13.5f;
         [SerializeField]
         Vector2 MaximumTurnVelocity = new Vector2(30f, 30f);
         //[SerializeField]
@@ -32,6 +37,7 @@ namespace LeftOut.LudumDare
         {
             m_Rigidbody = GetComponent<Rigidbody>();
             m_IsFlying = false;
+            m_FlowerSensor = GetComponentInChildren<BeeSensorProcessor>();
         }
 
         void Update()
@@ -39,11 +45,14 @@ namespace LeftOut.LudumDare
             var rotation = MoveAction.action.ReadValue<Vector2>() * Time.deltaTime;
             rotation.Scale(MaximumTurnVelocity);
             transform.Rotate(rotation.y, rotation.x, 0);
-            
-            if (m_IsFlying)
+
+            var speed = ThrottleAction.action.IsPressed() ? CruisingSpeed : BaseSpeed;
+            var displacement = speed * Time.deltaTime * transform.forward;
+            transform.position += displacement;
+
+            if (m_FlowerSensor.DoesSenseFlower)
             {
-                var displacement = MaximumVelocity * Time.deltaTime * transform.forward;
-                transform.position += displacement;
+                Debug.Log(m_FlowerSensor.ClosestFlower);
             }
         }
 
