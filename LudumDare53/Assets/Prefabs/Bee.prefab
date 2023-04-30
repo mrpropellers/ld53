@@ -40,7 +40,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1726071572732789593}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 45e653bab7fb20e499bda25e1b646fea, type: 3}
   m_Name: 
@@ -173,6 +173,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7062071217250275354}
+  - component: {fileID: 2175169664576230820}
   - component: {fileID: 7062071217250275353}
   - component: {fileID: 3362693549497062797}
   - component: {fileID: 1116252582106120871}
@@ -202,6 +203,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2175169664576230820
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7062071217250275352}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 379ace6e511441b6bddc66c1835a56a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &7062071217250275353
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -233,6 +246,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a52a0b58337c4dec8f4588c3b83381de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  BodyState: {fileID: 2175169664576230820}
   BeeRoot: {fileID: 7062071217250275354}
   GroundMoveAction: {fileID: -4758858015638054784, guid: 5de5c0b2d094f644ba302b2ed633c422,
     type: 3}
@@ -307,7 +321,19 @@ MonoBehaviour:
     m_ActionId: 8c4abdf8-4099-493a-aa1a-129acec7c3df
     m_ActionName: Player/Jump[/Keyboard/space]
   - m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 3362693549497062797}
+        m_TargetAssemblyTypeName: LeftOut.LudumDare.BeeGroundController, Assembly-CSharp
+        m_MethodName: OnPollinate
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_ActionId: 9f7984d5-7622-4b3b-ba50-354f0c6afd38
     m_ActionName: BeeLanded/Pollinate[/Keyboard/f,/XInputControllerWindows/buttonWest]
   - m_PersistentCalls:

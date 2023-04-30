@@ -19,7 +19,7 @@ namespace LeftOut.LudumDare
         PlayerInput m_PlayerInput;
         
         BeeFlightController m_FlightController;
-        // BeeGroundController m_GroundController;
+        BeeGroundController m_GroundController;
         [SerializeField]
         string FlyingActionMapName;
         [SerializeField]
@@ -55,7 +55,7 @@ namespace LeftOut.LudumDare
         {
             m_CurrentState = StartingState;
             m_FlightController = GetComponent<BeeFlightController>();
-            // m_GroundController = GetComponent<BeeGroundController>();
+            m_GroundController = GetComponent<BeeGroundController>();
             m_PlayerInput = GetComponent<PlayerInput>();
             FlowerSensor = GetComponentInChildren<BeeFlowerSensor>();
             SetUpForCurrentState();
@@ -126,11 +126,13 @@ namespace LeftOut.LudumDare
 
         IEnumerator Land()
         {
-            var target = FlowerSensor.ClosestFlower.LandingPointCenter;
+            var flower = FlowerSensor.ClosestFlower;
+            var target = flower.LandingPointCenter;
             BeeRoot.SetPositionAndRotation(target.position, target.rotation);
             m_FlightController.enabled = false;
             yield return null;
             m_CurrentState = ControlState.Grounded;
+            m_GroundController.FinishLanding(flower);
             SetUpForCurrentState();
         }
 
