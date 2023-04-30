@@ -7,6 +7,9 @@
 # Default to auto-normalized line endings.
 * text eol=auto
 
+*.pdf lfs
+*.ttf lfs
+
 # Code
 *.cs text diff=csharp
 
