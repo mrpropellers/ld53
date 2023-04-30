@@ -7,7 +7,7 @@ using Unity.VisualScripting;
 
 namespace LeftOut.LudumDare
 {
-    public class BeeSensorProcessor : MonoBehaviour
+    public class BeeFlowerSensor : MonoBehaviour
     { 
         List<Flower> m_FlowersInRange;
 

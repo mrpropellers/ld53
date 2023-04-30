@@ -1,5 +1,76 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1726071572732789593
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4391464068521085635}
+  - component: {fileID: 2212086099031153042}
+  m_Layer: 0
+  m_Name: GroundedCamera
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4391464068521085635
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1726071572732789593}
+  m_LocalRotation: {x: 0.15770358, y: -0, z: -0, w: 0.98748654}
+  m_LocalPosition: {x: 0, y: 1.79, z: -3.29}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 7697637018165861524}
+  m_Father: {fileID: 2781280364318419906}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 25.441, y: 0, z: 0}
+--- !u!114 &2212086099031153042
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1726071572732789593}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45e653bab7fb20e499bda25e1b646fea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ExcludedPropertiesInInspector:
+  - m_Script
+  m_LockStageInInspector: 
+  m_StreamingVersion: 20170927
+  m_Priority: 10
+  m_StandbyUpdate: 2
+  m_LookAt: {fileID: 7062071218971153879}
+  m_Follow: {fileID: 7062071217250275354}
+  m_Lens:
+    FieldOfView: 40
+    OrthographicSize: 10
+    NearClipPlane: 0.1
+    FarClipPlane: 5000
+    Dutch: 0
+    ModeOverride: 0
+    LensShift: {x: 0, y: 0}
+    GateFit: 2
+    m_SensorSize: {x: 1, y: 1}
+  m_Transitions:
+    m_BlendHint: 0
+    m_InheritPosition: 0
+    m_OnCameraLive:
+      m_PersistentCalls:
+        m_Calls: []
+  m_LegacyBlendHint: 0
+  m_ComponentOwner: {fileID: 7697637018165861524}
 --- !u!1 &3206116761247818180
 GameObject:
   m_ObjectHideFlags: 0
@@ -26,12 +97,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3206116761247818180}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0.708}
+  m_LocalPosition: {x: 0, y: -0.17, z: 0.73}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 7062071217250275354}
-  m_RootOrder: 2
+  m_Father: {fileID: 7062071218692017470}
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!136 &4773242178381966330
 CapsuleCollider:
@@ -43,10 +114,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 1
   m_Enabled: 1
-  m_Radius: 1.4978143
-  m_Height: 7.7154727
+  m_Radius: 2.08
+  m_Height: 16.94
   m_Direction: 2
-  m_Center: {x: -0.03733313, y: 0.049304843, z: 2.4670608}
+  m_Center: {x: -0.03733313, y: 0.049304843, z: 6.44}
 --- !u!114 &8268196617886088768
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -60,6 +131,39 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BeeCenter: {fileID: 7062071217250275354}
+--- !u!1 &4612112874439493861
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2781280364318419906}
+  m_Layer: 0
+  m_Name: Cameras
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2781280364318419906
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4612112874439493861}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 7062071218692017470}
+  - {fileID: 4391464068521085635}
+  m_Father: {fileID: 7062071217250275354}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7062071217250275352
 GameObject:
   m_ObjectHideFlags: 0
@@ -70,6 +174,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7062071217250275354}
   - component: {fileID: 7062071217250275353}
+  - component: {fileID: 3362693549497062797}
+  - component: {fileID: 1116252582106120871}
   - component: {fileID: 7062071217250275355}
   - component: {fileID: 7062071217250275356}
   m_Layer: 0
@@ -92,8 +198,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7062071218971153879}
-  - {fileID: 7062071218692017470}
-  - {fileID: 7313466412290086950}
+  - {fileID: 2781280364318419906}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -116,6 +221,41 @@ MonoBehaviour:
   BaseSpeed: 1
   CruisingSpeed: 3
   MaximumTurnVelocity: {x: 35, y: 20}
+--- !u!114 &3362693549497062797
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7062071217250275352}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a52a0b58337c4dec8f4588c3b83381de, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BeeRoot: {fileID: 7062071217250275354}
+  GroundMoveAction: {fileID: -4758858015638054784, guid: 5de5c0b2d094f644ba302b2ed633c422,
+    type: 3}
+  YawVelocity: 50
+--- !u!114 &1116252582106120871
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7062071217250275352}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e379a80235e81d04ab2f3071e6186464, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FlyingActionMapName: BeeFlight
+  GroundActionMapName: BeeLanded
+  FlyingCamera: {fileID: 7062071218692017471}
+  GroundedCamera: {fileID: 2212086099031153042}
+  FlowerSensor: {fileID: 8268196617886088768}
+  BeeRoot: {fileID: 7062071217250275354}
+  StartingState: 2
 --- !u!54 &7062071217250275355
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -164,14 +304,18 @@ MonoBehaviour:
     m_ActionName: Player/Move[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d,/Keyboard/upArrow,/Keyboard/downArrow,/Keyboard/leftArrow,/Keyboard/rightArrow]
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 2690c379-f54d-45be-a724-414123833eb4
-    m_ActionName: Player/Look[/Mouse/delta]
+    m_ActionId: 8c4abdf8-4099-493a-aa1a-129acec7c3df
+    m_ActionName: Player/Jump[/Keyboard/space]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 9f7984d5-7622-4b3b-ba50-354f0c6afd38
+    m_ActionName: BeeLanded/Pollinate[/Keyboard/f,/XInputControllerWindows/buttonWest]
   - m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 7062071217250275353}
-        m_TargetAssemblyTypeName: LeftOut.LudumDare.BeeController, Assembly-CSharp
-        m_MethodName: OnThrottle
-        m_Mode: 1
+      - m_Target: {fileID: 1116252582106120871}
+        m_TargetAssemblyTypeName: LeftOut.LudumDare.BeeLandingHandler, Assembly-CSharp
+        m_MethodName: OnLandTakeoff
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -180,12 +324,28 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-    m_ActionId: 8c4abdf8-4099-493a-aa1a-129acec7c3df
-    m_ActionName: Player/Jump[/Keyboard/space]
+    m_ActionId: 3fe1ce3c-4c25-4951-9d5a-f0a5cc8a525d
+    m_ActionName: BeeFlight/LandTakeoff[/Keyboard/e,/XInputControllerWindows/buttonSouth]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1116252582106120871}
+        m_TargetAssemblyTypeName: LeftOut.LudumDare.BeeLandingHandler, Assembly-CSharp
+        m_MethodName: OnLandTakeoff
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 7e7bfa98-69e8-4857-8c88-554d76892072
+    m_ActionName: BeeLanded/LandTakeoff[/Keyboard/e,/XInputControllerWindows/buttonSouth]
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 980e881e-182c-404c-8cbf-3d09fdb48fef
-    m_ActionName: Player/Sprint[/Keyboard/leftShift]
+    m_ActionId: fb426566-1a5e-4d2a-839f-3f3bb3f842be
+    m_ActionName: BeeLanded/Move[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d,/Keyboard/upArrow,/Keyboard/downArrow,/Keyboard/leftArrow,/Keyboard/rightArrow,/XInputControllerWindows/leftStick]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: BeeFlight
@@ -299,7 +459,7 @@ GameObject:
   - component: {fileID: 7062071218692017470}
   - component: {fileID: 7062071218692017471}
   m_Layer: 0
-  m_Name: BeeCamera
+  m_Name: FlightCamera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -312,14 +472,15 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7062071218692017469}
-  m_LocalRotation: {x: 0.2109234, y: -0, z: -0, w: 0.9775026}
-  m_LocalPosition: {x: 0, y: 0.9, z: -1.75}
+  m_LocalRotation: {x: 0.21092339, y: -0, z: -0, w: 0.9775026}
+  m_LocalPosition: {x: 0, y: 0.8999996, z: -1.75}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7062071218608058336}
-  m_Father: {fileID: 7062071217250275354}
-  m_RootOrder: 1
+  - {fileID: 7313466412290086950}
+  m_Father: {fileID: 2781280364318419906}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 25.441, y: 0, z: 0}
 --- !u!114 &7062071218692017471
 MonoBehaviour:
@@ -415,6 +576,103 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!1 &8214353518399337134
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7697637018165861524}
+  - component: {fileID: 406297163221966406}
+  - component: {fileID: 8159930541376425943}
+  - component: {fileID: 4436113999664886}
+  m_Layer: 0
+  m_Name: cm
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7697637018165861524
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8214353518399337134}
+  m_LocalRotation: {x: -0, y: -0, z: -0.6972211, w: 0.71685624}
+  m_LocalPosition: {x: -2.5224605, y: 26.45602, z: 15.912669}
+  m_LocalScale: {x: 5.8780417, y: 5.8780417, z: 5.878043}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4391464068521085635}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &406297163221966406
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8214353518399337134}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac0b09e7857660247b1477e93731de29, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8159930541376425943
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8214353518399337134}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4044717213e31446939f7bd49c896ea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_TrackedObjectOffset: {x: 0, y: 2.32, z: 0}
+  m_LookaheadTime: 0.062
+  m_LookaheadSmoothing: 2
+  m_LookaheadIgnoreY: 0
+  m_HorizontalDamping: 1
+  m_VerticalDamping: 2
+  m_ScreenX: 0.5
+  m_ScreenY: 0.5
+  m_DeadZoneWidth: 0.13
+  m_DeadZoneHeight: 0.13
+  m_SoftZoneWidth: 0.94
+  m_SoftZoneHeight: 0.93
+  m_BiasX: -0.005999833
+  m_BiasY: 0
+  m_CenterOnActivate: 1
+--- !u!114 &4436113999664886
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8214353518399337134}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd6043bde05a7fc4cba197d06915c1e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Damping: {x: 0.5, y: 0.5, z: 0.5}
+  ShoulderOffset: {x: 0, y: 1.29, z: -1.29}
+  VerticalArmLength: 0.5
+  CameraSide: 1
+  CameraDistance: 2
+  CameraCollisionFilter:
+    serializedVersion: 2
+    m_Bits: 0
+  IgnoreTag: 
+  CameraRadius: 0.2
+  DampingIntoCollision: 0
+  DampingFromCollision: 2
 --- !u!1001 &4286852487829829011
 PrefabInstance:
   m_ObjectHideFlags: 0
