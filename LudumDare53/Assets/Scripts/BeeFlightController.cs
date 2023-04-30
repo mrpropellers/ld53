@@ -11,7 +11,8 @@ namespace LeftOut.LudumDare
     {
         Rigidbody m_Rigidbody;
         BeeFlowerSensor m_FlowerFlowerSensor;
-        Vector2 m_MoveInput;
+        Vector3 m_RotationalTorque;
+        float m_Speed;
 
         [SerializeField]
         InputActionReference MoveAction;
@@ -23,7 +24,7 @@ namespace LeftOut.LudumDare
         [SerializeField]
         float CruisingSpeed = 13.5f;
         [SerializeField]
-        Vector2 MaximumTurnVelocity = new Vector2(30f, 30f);
+        float MaxAngularVelocity = 4f;
 
 
         // Start is called before the first frame update
@@ -36,13 +37,19 @@ namespace LeftOut.LudumDare
 
         void Update()
         {
-            var rotation = MoveAction.action.ReadValue<Vector2>() * Time.deltaTime;
-            rotation.Scale(MaximumTurnVelocity);
-            transform.Rotate(rotation.y, rotation.x, 0);
+            var moveInput = MoveAction.action.ReadValue<Vector2>();
+            m_RotationalTorque = new Vector3(moveInput.y, moveInput.x, 0);
+            
+            m_Speed = ThrottleAction.action.IsPressed() ? CruisingSpeed : BaseSpeed;
+        }
 
-            var speed = ThrottleAction.action.IsPressed() ? CruisingSpeed : BaseSpeed;
-            var displacement = speed * Time.deltaTime * transform.forward;
-            transform.position += displacement;
+        void FixedUpdate()
+        {
+            // TODO: Clamp pitch to keep player from flipping bee over
+            // TODO: Damp velocity when no new torque is being applied
+            m_Rigidbody.AddRelativeTorque(m_RotationalTorque);
+            m_Rigidbody.maxAngularVelocity = MaxAngularVelocity;
+            m_Rigidbody.velocity = m_Rigidbody.transform.forward * m_Speed;
         }
     }
 }
