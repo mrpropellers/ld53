@@ -37,7 +37,7 @@ namespace LeftOut.LudumDare
             SetFlowerColor(Pollen);
 
             // TODO: not this
-            StartCoroutine(SpawnScale(2f, Vector3.one * Random.Range(0.8f, 1.2f)));
+            StartCoroutine(SpawnScale(2f, Vector3.one)); // * Random.Range(0.8f, 1.2f)));
         }
         
         // Update is called once per frame
@@ -115,7 +115,7 @@ namespace LeftOut.LudumDare
             var flowerObj = Instantiate(flowerPrefab);
             var flower = flowerObj.GetComponent<Flower>();
             flower.SetFlowerColor(pollen);
-            flowerObj.transform.position = new Vector3(pos.x, y, pos.z);
+            flowerObj.transform.position = new Vector3(pos.x, y - Random.Range(0, 5f), pos.z);
             var terrainData = terrain.terrainData;
             var norm = terrain.terrainData.GetInterpolatedNormal(pos.x / terrainData.size.x,
                 pos.z / terrainData.size.z);
