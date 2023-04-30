@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using Cinemachine;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -17,9 +18,16 @@ namespace LeftOut.LudumDare
 
         ControlState m_CurrentState;
         PlayerInput m_PlayerInput;
+        Rigidbody m_RootRigidBody;
         
         BeeFlightController m_FlightController;
         BeeGroundController m_GroundController;
+        [SerializeField]
+        Ease LandingEase = Ease.OutSine;
+        [SerializeField]
+        float LandingSpeed;
+        [SerializeField]
+        Rigidbody VisualRigidBody;
         [SerializeField]
         string FlyingActionMapName;
         [SerializeField]
@@ -58,6 +66,7 @@ namespace LeftOut.LudumDare
             m_GroundController = GetComponent<BeeGroundController>();
             m_PlayerInput = GetComponent<PlayerInput>();
             FlowerSensor = GetComponentInChildren<BeeFlowerSensor>();
+            m_RootRigidBody = BeeRoot.GetComponent<Rigidbody>();
             SetUpForCurrentState();
         }
 
@@ -118,19 +127,37 @@ namespace LeftOut.LudumDare
 
         IEnumerator TakeOff()
         {
+            void ResetRigidbody(Rigidbody body)
+            {
+                body.velocity = Vector3.zero;
+                body.angularVelocity = Vector3.zero;
+            }
             m_FlightController.enabled = true;
-            yield return null;
             m_CurrentState = ControlState.Flying;
+            ResetRigidbody(m_RootRigidBody);
+            ResetRigidbody(VisualRigidBody);
             SetUpForCurrentState();
+            yield return null;
+            m_RootRigidBody.isKinematic = false;
+            VisualRigidBody.isKinematic = false;
         }
 
         IEnumerator Land()
         {
+            void DoLandTween(Transform tf, Transform target, float time)
+            {
+                tf.DOMove(target.position, time).SetEase(LandingEase);
+                tf.DORotate(target.rotation.eulerAngles, time).SetEase(LandingEase);
+            }
             var flower = FlowerSensor.ClosestFlower;
             var target = flower.LandingPointCenter;
-            BeeRoot.SetPositionAndRotation(target.position, target.rotation);
+            VisualRigidBody.isKinematic = true;
+            m_RootRigidBody.isKinematic = true;
+            var landingTime = (VisualRigidBody.position - target.position).magnitude / LandingSpeed;
             m_FlightController.enabled = false;
-            yield return null;
+            DoLandTween(BeeRoot.transform, target, landingTime);
+            DoLandTween(VisualRigidBody.transform, target, landingTime);
+            yield return new WaitForSeconds(landingTime);
             m_CurrentState = ControlState.Grounded;
             m_GroundController.FinishLanding(flower);
             SetUpForCurrentState();

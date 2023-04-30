@@ -54,7 +54,7 @@ namespace LeftOut.LudumDare
             }
             else if (!BodyState.HasPollen)
             {
-                Debug.Log("Getting pollen.");
+                Debug.Log("Covering self in pollen.", this);
                 BodyState.CoverSelf(m_CurrentFlower.GivePollen());
             }
             

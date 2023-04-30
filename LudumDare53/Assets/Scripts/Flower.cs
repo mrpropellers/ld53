@@ -30,7 +30,7 @@ namespace LeftOut.LudumDare
 
         public Pollen GivePollen()
         {
-            Debug.Log($"Giving some {PollenColor} pollen");
+            Debug.Log($"Giving up some {PollenColor} pollen");
             return new Pollen(PollenColor, this);
         }
     }
