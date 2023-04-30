@@ -9,7 +9,7 @@ namespace LeftOut.LudumDare
         
         [SerializeField]
         Transform FlowerCenter;
-        
+
         public Transform LandingPointCenter => FlowerCenter;
         // Start is called before the first frame update
         void Start()
@@ -31,7 +31,7 @@ namespace LeftOut.LudumDare
         public Pollen GivePollen()
         {
             Debug.Log($"Giving some {PollenColor} pollen");
-            return new Pollen(PollenColor);
+            return new Pollen(PollenColor, this);
         }
     }
 }
