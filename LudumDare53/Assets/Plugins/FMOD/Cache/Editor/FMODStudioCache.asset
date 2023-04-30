@@ -15,7 +15,7 @@ MonoBehaviour:
   Path: Assets/FMOD Banks/Desktop/Master.bank
   Name: Master
   StudioPath: bank:/Master
-  lastModified: 638183755909870076
+  lastModified: 638183782648035645
   FileSizes: []
   Exists: 1
 --- !u!114 &-3624345755335785853
@@ -33,7 +33,7 @@ MonoBehaviour:
   Path: Assets/FMOD Banks/Desktop/Master.strings.bank
   Name: Master.strings
   StudioPath: bank:/Master.strings
-  lastModified: 638183755909874494
+  lastModified: 638183782648035645
   FileSizes:
   - Name: 
     Value: 956
@@ -54,43 +54,14 @@ MonoBehaviour:
   - {fileID: -3624345755335785853}
   - {fileID: -4517963822328929868}
   - {fileID: 2184637738929550797}
-  EditorEvents:
-  - {fileID: 1592291651353600193}
-  - {fileID: 3471033833467655941}
+  EditorEvents: []
   EditorParameters: []
   MasterBanks:
   - {fileID: -4517963822328929868}
   StringsBanks:
   - {fileID: -3624345755335785853}
-  cacheTime: 638183755910704329
+  cacheTime: 638183782648744997
   cacheVersion: 131601
---- !u!114 &1592291651353600193
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/Pollinate
-  m_EditorClassIdentifier: 
-  Path: event:/Pollinate
-  Guid:
-    Data1: -1786784975
-    Data2: 1320705510
-    Data3: 759531904
-    Data4: 314375783
-  Banks:
-  - {fileID: 2184637738929550797}
-  IsStream: 0
-  Is3D: 0
-  IsOneShot: 1
-  Parameters: []
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 4458
 --- !u!114 &2184637738929550797
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -106,83 +77,6 @@ MonoBehaviour:
   Path: Assets/FMOD Banks/Desktop/Music.bank
   Name: Music
   StudioPath: bank:/Music
-  lastModified: 638183755910704329
+  lastModified: 638183782648744997
   FileSizes: []
-  Exists: 1
---- !u!114 &3471033833467655941
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: event:/MusicLoop
-  m_EditorClassIdentifier: 
-  Path: event:/MusicLoop
-  Guid:
-    Data1: -1605785903
-    Data2: 1246276864
-    Data3: 408614574
-    Data4: 1251497726
-  Banks:
-  - {fileID: 2184637738929550797}
-  IsStream: 1
-  Is3D: 0
-  IsOneShot: 0
-  Parameters:
-  - {fileID: 4258659584337850053}
-  - {fileID: 4743507206418135373}
-  MinDistance: 1
-  MaxDistance: 20
-  Length: 71331
---- !u!114 &4258659584337850053
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
-  m_Name: parameter:/MusicLoop/Bloom
-  m_EditorClassIdentifier: 
-  Name: Bloom
-  StudioPath: 
-  Min: 0
-  Max: 100
-  Default: 0
-  ID:
-    data1: 2068832573
-    data2: 2873878235
-  Type: 0
-  IsGlobal: 0
-  Labels: []
-  Exists: 1
---- !u!114 &4743507206418135373
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
-  m_Name: parameter:/MusicLoop/Proximity
-  m_EditorClassIdentifier: 
-  Name: Proximity
-  StudioPath: 
-  Min: 0
-  Max: 100
-  Default: 0
-  ID:
-    data1: 3449229756
-    data2: 3580808598
-  Type: 0
-  IsGlobal: 0
-  Labels: []
   Exists: 1
