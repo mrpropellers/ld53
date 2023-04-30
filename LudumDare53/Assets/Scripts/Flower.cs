@@ -71,6 +71,7 @@ namespace LeftOut.LudumDare
         public void ReceivePollen(Pollen incomingPollen)
         {
             Debug.Log($"{incomingPollen.Color} received.");
+            if (!Pollen.VerifyPollination(Pollen, incomingPollen)) return;
             var newColor = Pollen.CrossPollinate(this, Pollen, incomingPollen);
             SetFlowerColor(newColor);
 
