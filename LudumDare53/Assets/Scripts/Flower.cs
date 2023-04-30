@@ -119,6 +119,7 @@ namespace LeftOut.LudumDare
             var terrainData = terrain.terrainData;
             var norm = terrain.terrainData.GetInterpolatedNormal(pos.x / terrainData.size.x,
                 pos.z / terrainData.size.z);
+            flowerObj.transform.Rotate(0, Random.Range(0, 360f), 0);
             flowerObj.transform.rotation = Quaternion.FromToRotation(Vector3.up, norm);
         }
 
