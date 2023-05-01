@@ -24,7 +24,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "LandTakeoff",
+                    "name": "Land",
                     "type": "Button",
                     "id": "3fe1ce3c-4c25-4951-9d5a-f0a5cc8a525d",
                     "expectedControlType": "Button",
@@ -173,7 +173,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "KeyboardMouse",
-                    "action": "LandTakeoff",
+                    "action": "Land",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -184,7 +184,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "LandTakeoff",
+                    "action": "Land",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -213,7 +213,7 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "LandTakeoff",
+                    "name": "Takeoff",
                     "type": "Button",
                     "id": "7e7bfa98-69e8-4857-8c88-554d76892072",
                     "expectedControlType": "Button",
@@ -252,7 +252,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "KeyboardMouse",
-                    "action": "LandTakeoff",
+                    "action": "Takeoff",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -263,7 +263,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Gamepad",
-                    "action": "LandTakeoff",
+                    "action": "Takeoff",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
