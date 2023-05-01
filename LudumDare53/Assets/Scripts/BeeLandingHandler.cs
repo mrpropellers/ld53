@@ -3,6 +3,7 @@ using System.Collections;
 using Cinemachine;
 using DG.Tweening;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.InputSystem;
 
 namespace LeftOut.LudumDare
@@ -45,6 +46,10 @@ namespace LeftOut.LudumDare
         Transform BeeRoot;
         [SerializeField]
         ControlState StartingState;
+
+        public UnityEvent<BeeLandingHandler> StateChanged;
+
+        public bool IsInFlight => m_CurrentState == ControlState.Flying;
 
         public bool CanLand
         {
@@ -199,6 +204,7 @@ namespace LeftOut.LudumDare
                 default:
                     break;
             }
+            StateChanged?.Invoke(this);
         }
         
         static void ResetRigidbody(Rigidbody body)

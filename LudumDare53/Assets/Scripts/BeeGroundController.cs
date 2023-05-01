@@ -40,7 +40,7 @@ namespace LeftOut.LudumDare
             {
                 return;
             }
-            
+
             if (m_CurrentFlower == null)
             {
                 Debug.LogError("Current flower is null!");
