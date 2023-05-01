@@ -47,8 +47,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   FlowerCenter: {fileID: 2460685216689218737}
+  SpawnDuration: 3
   m_SpawnRadius: 15
-  m_SpawnRadiusDistance: 5
+  m_SpawnRadiusDistance: 7
+  GrowthEase: 24
   m_FlowerRenderer: {fileID: 0}
 --- !u!1 &7926318793573991117
 GameObject:
@@ -105,6 +107,21 @@ PrefabInstance:
     - target: {fileID: -8679921383154817045, guid: 5e432de9a7fbd228988f6eae77a39947,
         type: 3}
       propertyPath: m_RootOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 5e432de9a7fbd228988f6eae77a39947,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 5e432de9a7fbd228988f6eae77a39947,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -8679921383154817045, guid: 5e432de9a7fbd228988f6eae77a39947,
+        type: 3}
+      propertyPath: m_LocalScale.z
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5e432de9a7fbd228988f6eae77a39947,

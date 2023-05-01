@@ -14,7 +14,11 @@ namespace LeftOut.LudumDare
         int m_Length = 256;
         [SerializeField]
         float m_Scale = 20f;
+        [SerializeField]
+        AnimationCurve m_CliffCurve;
 
+        [SerializeField]
+        bool m_RandomizeOffsets = true;
         [SerializeField]
         float m_OffX = 100f;
         [SerializeField]
@@ -30,8 +34,11 @@ namespace LeftOut.LudumDare
 
         void Start()
         {
-            m_OffX = Random.Range(0f, 9999f);
-            m_OffY = Random.Range(0f, 9999f);
+            if (m_RandomizeOffsets)
+            {
+                m_OffX = Random.Range(0f, 9999f);
+                m_OffY = Random.Range(0f, 9999f);
+            }
             m_Terrain = GetComponent<Terrain>();
             m_Terrain.terrainData = GenerateTerrain(m_Terrain.terrainData);
 
@@ -62,12 +69,18 @@ namespace LeftOut.LudumDare
             return heights;
         }
 
+        float RatioToCenter(float x, float y)
+        {
+            var distance = new Vector2(x - m_Width / 2f, y - m_Length / 2f).magnitude;
+            return distance / Mathf.Min(m_Width/2f, m_Length/2f);
+        }
+
         float CalculateHeight(int x, int y)
         {
             var xCoord = (float)x / m_Width * m_Scale + m_OffX;
             var yCoord = (float)y / m_Length * m_Scale + m_OffY;
 
-            return Mathf.PerlinNoise(xCoord, yCoord);
+            return Mathf.Clamp01(Mathf.PerlinNoise(xCoord, yCoord) * m_CliffCurve.Evaluate(RatioToCenter(x, y)));
         }
 
         void GenerateFlowers()

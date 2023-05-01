@@ -1,4 +1,5 @@
 using System.Collections;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.Serialization;
 
@@ -7,6 +8,8 @@ namespace LeftOut.LudumDare
     public class Flower : MonoBehaviour
     {
         GameObject MeshType;
+        bool m_CanYieldPollen;
+        
         [FormerlySerializedAs("ParentPollen")]
         [FormerlySerializedAs("Pollen")]
         [SerializeField]
@@ -17,6 +20,9 @@ namespace LeftOut.LudumDare
         
         [SerializeField]
         Transform FlowerCenter;
+
+        [SerializeField]
+        float SpawnDuration = 3.5f;
         
         [SerializeField]
         float m_SpawnRadius = 15;
@@ -27,7 +33,6 @@ namespace LeftOut.LudumDare
 
         static Terrain k_Terrain;
 
-        MaterialPropertyBlock m_PropBlock;
         [SerializeField]
         Renderer m_FlowerRenderer;
         static readonly int BaseColor = Shader.PropertyToID("_BaseColor");
@@ -41,10 +46,11 @@ namespace LeftOut.LudumDare
         void Start()
         {
             m_SpawnRadiusVector = new Vector2(m_SpawnRadius, m_SpawnRadius);
+            m_CanYieldPollen = true;
 
             if (ShouldAnimate)
             {
-                StartCoroutine(SpawnScale(2f, Vector3.one)); // * Random.Range(0.8f, 1.2f)));
+                StartCoroutine(SpawnScale(SpawnDuration, Vector3.one)); // * Random.Range(0.8f, 1.2f)));
             }
             FlowerCenter.gameObject.SetActive(!ShouldAnimate);
         }
@@ -73,7 +79,7 @@ namespace LeftOut.LudumDare
         public bool ReceivePollen(Pollen incomingPollen)
         {
             Debug.Log($"{incomingPollen.Color} received on flower.");
-            SetColor(secondaryPollen: incomingPollen);
+            //SetColor(secondaryPollen: incomingPollen);
 
             var pos = new Vector2(transform.position.x, transform.position.z);
             var points = FastPoissonDiskSampling.Sampling(pos - m_SpawnRadiusVector, pos + m_SpawnRadiusVector, m_SpawnRadiusDistance);
@@ -135,16 +141,17 @@ namespace LeftOut.LudumDare
 
         IEnumerator SpawnScale(float duration, Vector3 goalScale)
         {
-            var elapsedTime = 0f;
-            while (elapsedTime < duration)
-            {
-                transform.localScale = Vector3.Lerp(Vector3.zero, goalScale, (elapsedTime / duration));
-
-                elapsedTime += Time.deltaTime;
-                yield return new WaitForEndOfFrame();
-            }
+            transform.localScale = Vector3.zero;
+            DOVirtual.Vector3(Vector3.zero, goalScale / 2f, duration / 2f,
+                scale => transform.localScale = scale).SetEase(Ease.InCirc);
+            yield return new WaitForSeconds(duration / 2f);
+            DOVirtual.Vector3(goalScale / 2f, goalScale, duration / 2f,
+                (current) => transform.localScale = current)
+                .SetEase(Ease.OutElastic);
+            yield return new WaitForSeconds(duration/2f);
 
             FlowerCenter.gameObject.SetActive(true);
+            
         }
     }
 }
