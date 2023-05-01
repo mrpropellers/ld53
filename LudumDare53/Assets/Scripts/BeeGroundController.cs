@@ -1,6 +1,4 @@
-﻿
-using System;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace LeftOut.LudumDare
@@ -21,6 +19,8 @@ namespace LeftOut.LudumDare
 
         [SerializeField]
         float YawVelocity = 50f;
+
+        public bool DidPollinate { get; set; } = false;
 
         bool CanPollinate(Flower flower)
         {
@@ -51,13 +51,13 @@ namespace LeftOut.LudumDare
             {
                 Debug.Log("Pollinating.");
                 m_CurrentFlower.ReceivePollen(BodyState.YieldPollen());
+                DidPollinate = true;
             }
             else if (!BodyState.HasPollen)
             {
                 Debug.Log("Covering self in pollen.", this);
                 BodyState.CoverSelf(m_CurrentFlower.GivePollen());
             }
-            
         }
         
         internal void FinishLanding(Flower flower)

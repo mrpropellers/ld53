@@ -11,6 +11,36 @@ PrefabInstance:
       propertyPath: m_FlowerRenderer
       value: 
       objectReference: {fileID: 1911836337611057754}
+    - target: {fileID: 2460685216689218737, guid: 5b29c7c9f369f6d27965c6048301db3d,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 12.87
+      objectReference: {fileID: 0}
+    - target: {fileID: 2460685216689218737, guid: 5b29c7c9f369f6d27965c6048301db3d,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2460685216689218737, guid: 5b29c7c9f369f6d27965c6048301db3d,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2460685216689218737, guid: 5b29c7c9f369f6d27965c6048301db3d,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2460685216689218737, guid: 5b29c7c9f369f6d27965c6048301db3d,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2460685216689218737, guid: 5b29c7c9f369f6d27965c6048301db3d,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2516308129683965734, guid: 5b29c7c9f369f6d27965c6048301db3d,
         type: 3}
       propertyPath: m_RootOrder

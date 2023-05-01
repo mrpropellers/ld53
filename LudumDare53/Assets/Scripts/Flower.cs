@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Linq;
 using UnityEngine;
 
 namespace LeftOut.LudumDare
@@ -26,37 +25,35 @@ namespace LeftOut.LudumDare
         Renderer m_FlowerRenderer;
         static readonly int BaseColor = Shader.PropertyToID("_BaseColor");
 
+        public bool ShouldAnimate { get; private set; }
+
         public Transform LandingPointCenter => FlowerCenter;
         // Start is called before the first frame update
         void Start()
         {
             m_SpawnRadiusVector = new Vector2(m_SpawnRadius, m_SpawnRadius);
-            FlowerCenter.gameObject.SetActive(false);
 
             SetPropBlock();
-            SetFlowerColor(Pollen);
+            SetColor(Pollen);
 
             // TODO: not this
-            StartCoroutine(SpawnScale(2f, Vector3.one)); // * Random.Range(0.8f, 1.2f)));
+            if (ShouldAnimate)
+            {
+                StartCoroutine(SpawnScale(2f, Vector3.one)); // * Random.Range(0.8f, 1.2f)));
+            }
+            FlowerCenter.gameObject.SetActive(!ShouldAnimate);
         }
-        
-        // Update is called once per frame
-        void Update()
-        {
-        
-        }
-        
+
         void SetPropBlock()
         {
             m_PropBlock = new MaterialPropertyBlock();
             m_FlowerRenderer.SetPropertyBlock(m_PropBlock);
         }
 
-
-        public void SetFlowerColor(Pollen pollen)
+        void SetColor(Pollen pollen)
         {
             Pollen = pollen;
-            Debug.Log($"set flower color to {Pollen.NameToColor.FirstOrDefault(x => x.Value.Equals(pollen.Color)).Key}");
+            Debug.Log($"Set flower color to {pollen.GetNameFromColor()}");
 
             // TODO: why is this happening
             if (m_PropBlock == null)
@@ -70,10 +67,10 @@ namespace LeftOut.LudumDare
 
         public void ReceivePollen(Pollen incomingPollen)
         {
-            Debug.Log($"{incomingPollen.Color} received.");
+            Debug.Log($"{incomingPollen.GetNameFromColor()} received on flower.");
             if (!Pollen.VerifyPollination(Pollen, incomingPollen)) return;
-            var newColor = Pollen.CrossPollinate(this, Pollen, incomingPollen);
-            SetFlowerColor(newColor);
+            var newColor = this.CrossPollinate(Pollen, incomingPollen);
+            SetColor(newColor);
 
             // TODO: randomize or same flower shape?
             var pos = new Vector2(transform.position.x, transform.position.z);
@@ -104,18 +101,19 @@ namespace LeftOut.LudumDare
 
         public Pollen GivePollen()
         {
-            Debug.Log($"Giving some {Pollen.Color} pollen");
+            Debug.Log($"Giving some {Pollen.GetNameFromColor()} pollen to bee!");
             return new Pollen(Pollen.Color, this);
         }
         
-        public static void SpawnNewFlower(GameObject flowerPrefab, Pollen pollen, Vector3 pos, Terrain terrain)
+        public static void SpawnNewFlower(GameObject flowerPrefab, Pollen pollen, Vector3 pos, Terrain terrain, bool shouldAnim = true)
         {
             m_Terrain = terrain;
             var y = m_Terrain.SampleHeight(pos);
 
             var flowerObj = Instantiate(flowerPrefab);
             var flower = flowerObj.GetComponent<Flower>();
-            flower.SetFlowerColor(pollen);
+            flower.SetColor(pollen);
+            flower.ShouldAnimate = shouldAnim;
             flowerObj.transform.position = new Vector3(pos.x, y - Random.Range(0, 5f), pos.z);
             var terrainData = terrain.terrainData;
             var norm = terrain.terrainData.GetInterpolatedNormal(pos.x / terrainData.size.x,

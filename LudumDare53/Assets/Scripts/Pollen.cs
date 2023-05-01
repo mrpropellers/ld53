@@ -1,9 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
 namespace LeftOut.LudumDare
 {
+    [Serializable]
     public class Pollen
     {
         public enum ColorNames { Red, Yellow, Blue, Green, Orange, Violet };
@@ -41,38 +43,6 @@ namespace LeftOut.LudumDare
                 default:
                     return false;
             }
-        }
-        
-        
-        // TODO: ???
-        public static Pollen CrossPollinate(Flower parent, Pollen orig, Pollen incoming)
-        {
-            var origName = NameToColor.FirstOrDefault(x => x.Value.Equals(orig.Color)).Key;
-            var incomingName = NameToColor.FirstOrDefault(x => x.Value.Equals(incoming.Color)).Key;
-            Debug.Log($"received orig {orig.Color} {origName} and {incoming.Color} {incomingName}");
-            var color = orig.Color; 
-            switch (origName)
-            {
-                case ColorNames.Red when incomingName == ColorNames.Yellow:
-                case ColorNames.Yellow when incomingName == ColorNames.Red:
-                    color = NameToColor[ColorNames.Orange];
-                    break;
-                case ColorNames.Yellow when incomingName == ColorNames.Blue:
-                case ColorNames.Blue when incomingName == ColorNames.Yellow:
-                    color = NameToColor[ColorNames.Green];
-                    break;
-                case ColorNames.Blue when incomingName == ColorNames.Red:
-                case ColorNames.Red when incomingName == ColorNames.Blue:
-                    color = NameToColor[ColorNames.Violet];
-                    break;
-                case ColorNames.Green:
-                case ColorNames.Orange:
-                case ColorNames.Violet:
-                default:
-                    Debug.LogError($"Invalid color combo for {orig.Color} and {incoming.Color}");
-                    break;
-            }
-            return new Pollen(color, parent);
         }
     }
 }

@@ -210,6 +210,11 @@ namespace LeftOut.LudumDare
 
         IEnumerator TakeOff()
         {
+            if (m_GroundController.DidPollinate)
+            {
+                m_CurrentFlower.TakeOff();
+                m_GroundController.DidPollinate = false;
+            }
             yield return null;
             ExitTransition(ControlState.Flying);
         }
