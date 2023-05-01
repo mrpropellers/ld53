@@ -1,12 +1,19 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace LeftOut.LudumDare
 {
     public class Flower : MonoBehaviour
     {
+        GameObject MeshType;
+        [FormerlySerializedAs("ParentPollen")]
+        [FormerlySerializedAs("Pollen")]
         [SerializeField]
-        Pollen Pollen;
+        Pollen PrimaryPollen;
+
+        [SerializeField]
+        Pollen SecondaryPollen;
         
         [SerializeField]
         Transform FlowerCenter;
@@ -25,6 +32,8 @@ namespace LeftOut.LudumDare
         Renderer m_FlowerRenderer;
         static readonly int BaseColor = Shader.PropertyToID("_BaseColor");
 
+        static readonly int ColorA = Shader.PropertyToID("_ColorA");
+        static readonly int ColorB = Shader.PropertyToID("_ColorB");
         bool ShouldAnimate { get; set; }
 
         public Transform LandingPointCenter => FlowerCenter;
@@ -33,10 +42,6 @@ namespace LeftOut.LudumDare
         {
             m_SpawnRadiusVector = new Vector2(m_SpawnRadius, m_SpawnRadius);
 
-            SetPropBlock();
-            SetColor(Pollen);
-
-            // TODO: not this
             if (ShouldAnimate)
             {
                 StartCoroutine(SpawnScale(2f, Vector3.one)); // * Random.Range(0.8f, 1.2f)));
@@ -44,42 +49,44 @@ namespace LeftOut.LudumDare
             FlowerCenter.gameObject.SetActive(!ShouldAnimate);
         }
 
-        void SetPropBlock()
+        void SetColor(Pollen primaryPollen = null, Pollen secondaryPollen = null)
         {
-            m_PropBlock = new MaterialPropertyBlock();
-            m_FlowerRenderer.SetPropertyBlock(m_PropBlock);
-        }
-
-        void SetColor(Pollen pollen)
-        {
-            Pollen = pollen;
-            Debug.Log($"Set flower color to {pollen.GetNameFromColor()}");
-
-            // TODO: why is this happening
-            if (m_PropBlock == null)
+            if (primaryPollen != null)
             {
-                SetPropBlock();
+                Debug.Log($"Primary color is {primaryPollen.Color}");
+                PrimaryPollen = primaryPollen;    
+                m_FlowerRenderer.material.SetColor(ColorA, primaryPollen.Color);
+                if (secondaryPollen == null)
+                {
+                    m_FlowerRenderer.material.SetColor(ColorB, primaryPollen.Color);
+                }
             }
-            m_FlowerRenderer.GetPropertyBlock(m_PropBlock);
-            m_PropBlock.SetColor(BaseColor, Pollen.Color);
-            m_FlowerRenderer.SetPropertyBlock(m_PropBlock);
+
+            if (secondaryPollen != null)
+            {
+                Debug.Log($"Secondary color is {secondaryPollen.Color}");
+                SecondaryPollen = secondaryPollen;
+                m_FlowerRenderer.material.SetColor(ColorB, secondaryPollen.Color);
+            }
+            // Debug.Log($"Set flower color to {primaryPollen.GetNameFromColor()} / {secondaryPollen.GetNameFromColor()}");
         }
 
         public bool ReceivePollen(Pollen incomingPollen)
         {
-            Debug.Log($"{incomingPollen.GetNameFromColor()} received on flower.");
-            if (!Pollen.VerifyPollination(incomingPollen))
-            {
-                return false;
-            }
-            var newColor = this.CrossPollinate(Pollen, incomingPollen);
-            SetColor(newColor);
+            Debug.Log($"{incomingPollen.Color} received on flower.");
+            SetColor(secondaryPollen: incomingPollen);
 
             var pos = new Vector2(transform.position.x, transform.position.z);
             var points = FastPoissonDiskSampling.Sampling(pos - m_SpawnRadiusVector, pos + m_SpawnRadiusVector, m_SpawnRadiusDistance);
             foreach (var p in points)
             {
-                SpawnNewFlower(incomingPollen.Parent.gameObject, newColor, new Vector3(p.x, 0, p.y), k_Terrain);
+                var meshType = gameObject;
+                Debug.Log(PrimaryPollen.Parent);
+                if (PrimaryPollen.Parent != null)
+                {
+                    meshType = PrimaryPollen.Parent.MeshType;
+                }
+                SpawnNewFlower(meshType, PrimaryPollen, new Vector3(p.x, 0, p.y), k_Terrain, secondaryPollen: incomingPollen);
             }
 
             return true;
@@ -100,23 +107,29 @@ namespace LeftOut.LudumDare
                 elapsedTime += Time.deltaTime;
                 yield return new WaitForEndOfFrame();
             }
-            Destroy(gameObject);
+            // Destroy(gameObject);
+            gameObject.SetActive(false);
         }
 
         public Pollen GivePollen()
         {
-            Debug.Log($"Giving some {Pollen.GetNameFromColor()} pollen to bee!");
-            return new Pollen(Pollen.Color, this);
+            Debug.Log($"Giving some {PrimaryPollen.Color} primaryPollen to bee!");
+            return new Pollen(PrimaryPollen.Color, this);
         }
         
-        public static void SpawnNewFlower(GameObject flowerPrefab, Pollen pollen, Vector3 pos, Terrain terrain, bool shouldAnim = true)
+        public static void SpawnNewFlower(GameObject flowerPrefab, Pollen primaryPollen, Vector3 pos, Terrain terrain, bool shouldAnim = true, Pollen secondaryPollen = null)
         {
             k_Terrain = terrain;
             var y = k_Terrain.SampleHeight(pos);
 
             var flowerObj = Instantiate(flowerPrefab);
             var flower = flowerObj.GetComponent<Flower>();
-            flower.SetColor(pollen);
+            // if (primaryPollen.Parent == null)
+            // {
+            //     primaryPollen.Parent = flower;
+            // }
+            flower.SetColor(primaryPollen: primaryPollen, secondaryPollen: secondaryPollen);
+            flower.MeshType = flowerPrefab;
             flower.ShouldAnimate = shouldAnim;
             flowerObj.transform.position = new Vector3(pos.x, y - Random.Range(0, 5f), pos.z);
             var terrainData = terrain.terrainData;
