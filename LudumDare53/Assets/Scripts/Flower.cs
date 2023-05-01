@@ -68,7 +68,6 @@ namespace LeftOut.LudumDare
                 SecondaryPollen = secondaryPollen;
                 m_FlowerRenderer.material.SetColor(ColorB, secondaryPollen.Color);
             }
-            // Debug.Log($"Set flower color to {primaryPollen.GetNameFromColor()} / {secondaryPollen.GetNameFromColor()}");
         }
 
         public bool ReceivePollen(Pollen incomingPollen)
@@ -80,13 +79,12 @@ namespace LeftOut.LudumDare
             var points = FastPoissonDiskSampling.Sampling(pos - m_SpawnRadiusVector, pos + m_SpawnRadiusVector, m_SpawnRadiusDistance);
             foreach (var p in points)
             {
-                var meshType = gameObject;
-                Debug.Log(PrimaryPollen.Parent);
-                if (PrimaryPollen.Parent != null)
-                {
-                    meshType = PrimaryPollen.Parent.MeshType;
-                }
-                SpawnNewFlower(meshType, PrimaryPollen, new Vector3(p.x, 0, p.y), k_Terrain, secondaryPollen: incomingPollen);
+                // var meshType = gameObject;
+                // if (PrimaryPollen.Parent != null)
+                // {
+                //     meshType = PrimaryPollen.Parent.MeshType;
+                // }
+                SpawnNewFlower(gameObject, PrimaryPollen, new Vector3(p.x, 0, p.y), k_Terrain, secondaryPollen: incomingPollen);
             }
 
             return true;
@@ -124,14 +122,10 @@ namespace LeftOut.LudumDare
 
             var flowerObj = Instantiate(flowerPrefab);
             var flower = flowerObj.GetComponent<Flower>();
-            // if (primaryPollen.Parent == null)
-            // {
-            //     primaryPollen.Parent = flower;
-            // }
             flower.SetColor(primaryPollen: primaryPollen, secondaryPollen: secondaryPollen);
             flower.MeshType = flowerPrefab;
             flower.ShouldAnimate = shouldAnim;
-            flowerObj.transform.position = new Vector3(pos.x, y - Random.Range(0, 5f), pos.z);
+            flowerObj.transform.position = new Vector3(pos.x, y - Random.Range(2, 6f), pos.z);
             var terrainData = terrain.terrainData;
             var norm = terrain.terrainData.GetInterpolatedNormal(pos.x / terrainData.size.x,
                 pos.z / terrainData.size.z);

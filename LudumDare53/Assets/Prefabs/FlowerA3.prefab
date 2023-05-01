@@ -11,6 +11,11 @@ PrefabInstance:
       propertyPath: m_FlowerRenderer
       value: 
       objectReference: {fileID: 8243643499071595664}
+    - target: {fileID: 2460685216689218737, guid: 5b29c7c9f369f6d27965c6048301db3d,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 10.04
+      objectReference: {fileID: 0}
     - target: {fileID: 2516308129683965734, guid: 5b29c7c9f369f6d27965c6048301db3d,
         type: 3}
       propertyPath: m_RootOrder
