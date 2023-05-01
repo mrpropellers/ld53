@@ -2,8 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityAtoms;
 using LeftOut.Extensions;
-using Unity.VisualScripting;
+using UnityAtoms.BaseAtoms;
 
 namespace LeftOut.LudumDare
 {
@@ -12,7 +13,11 @@ namespace LeftOut.LudumDare
         List<Flower> m_FlowersInRange;
 
         [SerializeField]
+        GameObjectPairEvent FlowerSensed;
+        [SerializeField]
         Transform BeeCenter;
+        [SerializeField]
+        float FlowerTouchSensingRadius = 0.2f;
 
         public bool DoesSenseFlower => m_FlowersInRange.Any();
         public Flower ClosestFlower => FindClosestFlower();
@@ -38,11 +43,25 @@ namespace LeftOut.LudumDare
             }
         }
 
+        internal Flower DetectCollidingFlower()
+        {
+            var collisions = Physics.OverlapSphere(BeeCenter.position, FlowerTouchSensingRadius);
+            foreach (var collision in collisions)
+            {
+                if (collision.gameObject.TryGetComponentInParent<Flower>(out var flower))
+                {
+                    return flower;
+                }
+            }
+            Debug.LogWarning("No flowers detected in detection radius.");
+            return null;
+        }
+
         Flower FindClosestFlower()
         {
             if (!DoesSenseFlower)
             {
-                Debug.LogError($"Can't find closest flower because we don't sense any.");
+                Debug.LogWarning($"Can't find closest flower because we don't sense any.");
                 return null;
             }
 
@@ -70,6 +89,7 @@ namespace LeftOut.LudumDare
             }
             Debug.Log($"{nameof(Flower)} sensed: {flower.name}");
             m_FlowersInRange.Add(flower);
+            FlowerSensed.Raise(new GameObjectPair() { Item1= gameObject, Item2 = flower.gameObject});
         }
 
         static float CalculateDistance(Transform from, Transform to) =>
