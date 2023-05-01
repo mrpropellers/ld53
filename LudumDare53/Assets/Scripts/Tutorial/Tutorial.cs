@@ -2,28 +2,28 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using DG.Tweening;
 using TMPro;
-using UnityAtoms.BaseAtoms;
+using UnityAtoms;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using Void = UnityAtoms.Void;
 
 namespace LeftOut.LudumDare.Tutorial
 {
-    public class Tutorial : MonoBehaviour
+    public class Tutorial : MonoBehaviour, IAtomListener<PlayerInput>, IAtomListener<InputAction.CallbackContext>
     {
         const string k_KeyboardName = "KeyboardMouse";
         const string k_GamepadName = "Gamepad";
         
         [System.Serializable]
-        struct SpriteBindings
+        struct ControlSpecificText
         {
             [SerializeField]
-            TMPro.TMP_SpriteCharacter KeyboardMouse;
+            string KeyboardMouse;
             [SerializeField]
-            TMPro.TMP_SpriteCharacter Gamepad;
+            string Gamepad;
 
-            internal TMPro.TMP_SpriteCharacter GetSprite(string controlScheme)
+            internal string GetForScheme(string controlScheme)
             {
                 switch (controlScheme)
                 {
@@ -39,107 +39,210 @@ namespace LeftOut.LudumDare.Tutorial
         }
 
         [System.Serializable]
-        class Prompt
+        class Prompt : IAtomListener
         {
-            internal bool HasResolved { get; private set; }
+            internal enum Status
+            {
+                Uninitialized,
+                Latent,
+                Active,
+                Defused,
+                Complete
+            }
+            
+            const string k_ControlToken = "BUTTON";
 
+            internal Action<Prompt> OnTutorialReady;
+            internal Status CurrentStatus = Status.Uninitialized;
+            internal float LastTriggered = float.NegativeInfinity;
+
+            [SerializeField]
+            string PromptTemplate;
+            
             [field: SerializeField]
-            internal TMP_Text PromptText { get; private set; }
+            [field: Min(0f)]
+            internal float PreDelay { get; private set; }
+            
+            // Amount of time the prompt can stay in the queue before needing to be re-triggered
             [field: SerializeField]
-            internal bool ShouldQueue { get; private set; }
+            [field: Min(0f)]
+            internal float ExpirationTime { get; private set; }
+            
+            // TODO: Rework to allow for bespoke compound observations (or require other tutorials be completed first)
             // Event that triggers our tutorial prompt
             [field: SerializeField]
-            internal UnityAtoms.AtomEventBase Trigger { get; private set; }
-            // Event that "defuses" the prompt (makes it no longer necessary)
+            internal AtomEventBase Trigger { get; private set; }
+            
             [field: SerializeField]
-            internal UnityAtoms.AtomEventBase Defuse { get; private set; }
+            internal string ActionName { get; private set; }
+            
             [SerializeField]
-            List<SpriteBindings> Sprites;
+            List<ControlSpecificText> Substitutions;
 
-            public override string ToString() => PromptText?.name;
-
-            internal void Reset()
+            internal bool IsExpired => Time.time - LastTriggered > ExpirationTime;
+            
+            static bool TryReplaceOne(string text, string token, string replacement, out string result)
             {
-                PromptText.alpha = 0;
+                var pos = text.IndexOf(token);
+                if (pos < 0)
+                {
+                    result = text;
+                    return false;
+                }
+
+                result = text[..pos] + replacement + text[(pos + token.Length)..];
+                return true;
             }
 
-            internal void MarkResolved()
+            public string GetPromptText(string controlScheme)
             {
-                HasResolved = true;
-                Trigger.UnregisterAll();
-                Defuse.UnregisterAll();
+                var prompt = PromptTemplate;
+                foreach (var sub in Substitutions)
+                {
+                    var control = sub.GetForScheme(controlScheme);
+                    if (!TryReplaceOne(prompt, k_ControlToken, control, out prompt))
+                    {
+                        Debug.LogError(
+                            $"Failed to get all {Substitutions.Count} {nameof(Substitutions)} into {PromptTemplate}");
+                    }
+                }
+
+                return prompt;
             }
+            public override string ToString() => PromptTemplate;
+            public void OnEventRaised()
+            {
+                switch (CurrentStatus)
+                {
+                    case Status.Uninitialized:
+                        Debug.LogError("Prompt not initialized - can't do anything.");
+                        return;
+                    case Status.Latent:
+                        if (OnTutorialReady.Target == null)
+                        {
+                            Debug.LogError("No callback set.");
+                            return;
+                        }
+                        OnTutorialReady.Invoke(this);
+                        break;
+                    case Status.Active:
+                    case Status.Defused:
+                    case Status.Complete:
+                        Debug.LogWarning("Prompt was triggered more than once, unsubscribing to callback.");
+                        Trigger.UnregisterListener(this);
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+            }
+
         }
 
         string m_CurrentControlScheme;
-        Prompt m_NextPrompt;
-        bool m_IsPlayingPrompt;
+        Queue<Prompt> m_PromptsWaiting;
+        Prompt m_ActivePrompt;
+        bool IsPlayingPrompt => m_ActivePrompt != null;
 
+        [SerializeField]
+        TextMeshProUGUI PromptBox;
         [SerializeField]
         List<Prompt> Prompts;
         [SerializeField]
         float GameStartDelay = 3f;
         [SerializeField]
+        float TextFadeTime = 2f;
+        [SerializeField]
+        float PromptTimeout = 10f;
+        [SerializeField]
         UnityAtoms.AtomEvent<PlayerInput> ControlSchemeChanged;
         [SerializeField]
+        AtomEvent<InputAction.CallbackContext> PlayerActionTaken;
+        [SerializeField]
         UnityAtoms.AtomEventBase GameStartEvent;
+        
+        Prompt NextPrompt => m_PromptsWaiting.TryPeek(out var prompt) ? prompt : null;
 
         void Start()
         {
             Debug.Log("Resetting all Tutorial prompts.");
+            ControlSchemeChanged.RegisterListener(this);
+            PlayerActionTaken.RegisterListener(this);
+            m_ActivePrompt = null;
             foreach (var prompt in Prompts)
             {
-                prompt.Reset();
-                prompt.Trigger.Register(() => HandlePromptTrigger(prompt));
-                prompt.Defuse.Register(() => HandlePromptDefused(prompt));
+                prompt.OnTutorialReady = HandlePromptTrigger;
+                prompt.Trigger.RegisterListener(prompt);
+                prompt.CurrentStatus = Prompt.Status.Latent;
             }
 
+            m_PromptsWaiting = new Queue<Prompt>();
             StartCoroutine(RaiseAfter(GameStartEvent, GameStartDelay));
-        }
-
-        void OnEnable()
-        {
-            ControlSchemeChanged.Register(HandleControlSchemeChange);
         }
 
         void OnDisable()
         {
             Debug.Log("Unregistering callbacks");
-            ControlSchemeChanged.Register(HandleControlSchemeChange);
-            foreach (var prompt in Prompts.Where(prompt => !prompt.HasResolved))
+            ControlSchemeChanged?.UnregisterListener(this);
+            PlayerActionTaken?.UnregisterListener(this);
+            foreach (var prompt in Prompts)
             {
-                prompt.MarkResolved();
+                prompt.Trigger.UnregisterListener(prompt);
             }
         }
 
-        IEnumerator RaiseAfter(UnityAtoms.AtomEventBase atomEvent, float delay)
+        public void OnEventRaised(PlayerInput playerInput)
+        {
+            Debug.Log(
+                $"Control scheme changing from {m_CurrentControlScheme} to {playerInput.currentControlScheme}");
+            m_CurrentControlScheme = playerInput.currentControlScheme;
+        }
+
+        public void OnEventRaised(InputAction.CallbackContext context)
+        {
+            Debug.Log($"{context.action.name} {context.phase}");
+            if (!context.performed)
+                return;
+            if (IsPlayingPrompt && m_ActivePrompt.ActionName.Equals(context.action.name))
+            {
+                if (m_ActivePrompt.CurrentStatus == Prompt.Status.Defused)
+                {
+                    Debug.Log("Prompt already defused, just waiting for completion.");
+                    return;
+                }
+                if (m_ActivePrompt.CurrentStatus != Prompt.Status.Active)
+                {
+                    Debug.LogError("Active prompt not marked as such");
+                    return;
+                }
+                Debug.Log($"Defusing {m_ActivePrompt}");
+                Defuse(m_ActivePrompt);
+            }
+        }
+
+        static IEnumerator RaiseAfter(AtomEventBase atomEvent, float delay)
         {
             yield return new WaitForSeconds(delay);
             atomEvent.Raise();
         }
+        
+        void Defuse(Prompt prompt)
+        {
+            if (prompt.CurrentStatus != Prompt.Status.Active)
+            {
+                Debug.LogError($"Can't defuse {prompt} which isn't currently active");
+                return;
+            }
+            prompt.Trigger.UnregisterListener(prompt);
+            prompt.CurrentStatus = Prompt.Status.Defused;
+        }
 
         void HandlePromptTrigger(Prompt prompt)
         {
-            if (m_IsPlayingPrompt)
+            prompt.LastTriggered = Time.time;
+            if (IsPlayingPrompt && !m_PromptsWaiting.Contains(prompt))
             {
-                if (prompt.ShouldQueue)
-                {
-                    if (m_NextPrompt == prompt)
-                    {
-                        Debug.Log($"Doing nothing with {prompt} because it's already queued up.");
-                        return;
-                    }
-                    if (m_NextPrompt != null)
-                    {
-                        Debug.Log($"Booting {m_NextPrompt} to make way for {prompt}");
-                    }
-
-                    m_NextPrompt = prompt;
-                }
-                else
-                {
-                    Debug.Log("Doing nothing, already busy and can't queue this prompt.");
-                }
+                Debug.Log($"Adding {prompt} to queue.");
+                m_PromptsWaiting.Enqueue(prompt);
                 return;
             }
 
@@ -147,25 +250,54 @@ namespace LeftOut.LudumDare.Tutorial
             StartCoroutine(PlayPrompt(prompt));
         }
         
-
-        void HandlePromptDefused(Prompt prompt)
-        {
-            
-        }
-
         IEnumerator PlayPrompt(Prompt prompt)
         {
-            m_IsPlayingPrompt = true;
-            Debug.Log(prompt.PromptText.text);
-            yield return null;
-            m_IsPlayingPrompt = false;
+            m_ActivePrompt = prompt;
+            while (IsPlayingPrompt)
+            {
+                prompt.CurrentStatus = Prompt.Status.Active;
+                var promptText = prompt.GetPromptText(m_CurrentControlScheme);
+                Debug.Log(promptText);
+                PromptBox.text = promptText;
+                PromptBox.alpha = 0f;
+                yield return new WaitForSeconds(prompt.PreDelay);
+                // Check whether prompt was defused during the predelay period
+                if (prompt.CurrentStatus == Prompt.Status.Active)
+                {
+                    Debug.Log("Fade in");
+                    DOVirtual.Float(0f, 1f, TextFadeTime, val => PromptBox.alpha = val);
+                    yield return new WaitForSeconds(TextFadeTime);
+                }
+                var startTime = Time.time;
+                while (Time.time - startTime < PromptTimeout && prompt.CurrentStatus == Prompt.Status.Active)
+                    yield return null;
+                if (prompt.CurrentStatus == Prompt.Status.Active)
+                {
+                    Debug.LogWarning($"{prompt} timed out.");
+                    Defuse(prompt);
+                }
+                Debug.Log("Fade out.");
+                DOVirtual.Float(1f, 0f, TextFadeTime, val => PromptBox.alpha = val);
+                yield return new WaitForSeconds(TextFadeTime);
+                if (prompt.CurrentStatus != Prompt.Status.Defused)
+                {
+                    Debug.LogWarning($"Something changed status unexpectedly to {prompt.CurrentStatus}: {prompt}");
+                }
+                prompt.CurrentStatus = Prompt.Status.Complete;
+                m_ActivePrompt = null;
+                while (m_PromptsWaiting.TryDequeue(out prompt))
+                {
+                    if (prompt.IsExpired)
+                    {
+                        Debug.Log($"{prompt} expired in queue, discarding");
+                        continue;
+                    }
+                    // If it's not expired, keep it and leave this loop
+                    m_ActivePrompt = prompt;
+                    break;
+                }
+            }
         }
 
-        void HandleControlSchemeChange(PlayerInput playerInput)
-        {
-            Debug.Log(
-                $"Control scheme changing from {m_CurrentControlScheme} to {playerInput.currentControlScheme}");
-            m_CurrentControlScheme = playerInput.currentControlScheme;
-        }
     }
 }
