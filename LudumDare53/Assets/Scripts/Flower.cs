@@ -18,7 +18,7 @@ namespace LeftOut.LudumDare
         [SerializeField]
         float m_SpawnRadiusDistance = 5;
 
-        static Terrain m_Terrain;
+        static Terrain k_Terrain;
 
         MaterialPropertyBlock m_PropBlock;
         [SerializeField]
@@ -65,20 +65,24 @@ namespace LeftOut.LudumDare
             m_FlowerRenderer.SetPropertyBlock(m_PropBlock);
         }
 
-        public void ReceivePollen(Pollen incomingPollen)
+        public bool ReceivePollen(Pollen incomingPollen)
         {
             Debug.Log($"{incomingPollen.GetNameFromColor()} received on flower.");
-            if (!Pollen.VerifyPollination(Pollen, incomingPollen)) return;
+            if (!Pollen.VerifyPollination(incomingPollen))
+            {
+                return false;
+            }
             var newColor = this.CrossPollinate(Pollen, incomingPollen);
             SetColor(newColor);
 
-            // TODO: randomize or same flower shape?
             var pos = new Vector2(transform.position.x, transform.position.z);
             var points = FastPoissonDiskSampling.Sampling(pos - m_SpawnRadiusVector, pos + m_SpawnRadiusVector, m_SpawnRadiusDistance);
             foreach (var p in points)
             {
-                SpawnNewFlower(incomingPollen.Parent.gameObject, newColor, new Vector3(p.x, 0, p.y), m_Terrain);
+                SpawnNewFlower(incomingPollen.Parent.gameObject, newColor, new Vector3(p.x, 0, p.y), k_Terrain);
             }
+
+            return true;
         }
         
         public void TakeOff()
@@ -107,8 +111,8 @@ namespace LeftOut.LudumDare
         
         public static void SpawnNewFlower(GameObject flowerPrefab, Pollen pollen, Vector3 pos, Terrain terrain, bool shouldAnim = true)
         {
-            m_Terrain = terrain;
-            var y = m_Terrain.SampleHeight(pos);
+            k_Terrain = terrain;
+            var y = k_Terrain.SampleHeight(pos);
 
             var flowerObj = Instantiate(flowerPrefab);
             var flower = flowerObj.GetComponent<Flower>();

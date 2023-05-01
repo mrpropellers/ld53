@@ -23,26 +23,5 @@ namespace LeftOut.LudumDare
             Color = color;
             Parent = parent;
         }
-
-        public static bool VerifyPollination(Pollen orig, Pollen incoming)
-        {
-            var origName = NameToColor.FirstOrDefault(x => x.Value.Equals(orig.Color)).Key;
-            var incomingName = NameToColor.FirstOrDefault(x => x.Value.Equals(incoming.Color)).Key;
-            switch (origName)
-            {
-                case ColorNames.Red when incomingName == ColorNames.Yellow:
-                case ColorNames.Yellow when incomingName == ColorNames.Red:
-                case ColorNames.Yellow when incomingName == ColorNames.Blue:
-                case ColorNames.Blue when incomingName == ColorNames.Yellow:
-                case ColorNames.Blue when incomingName == ColorNames.Red:
-                case ColorNames.Red when incomingName == ColorNames.Blue:
-                    return true;
-                case ColorNames.Green:
-                case ColorNames.Orange:
-                case ColorNames.Violet:
-                default:
-                    return false;
-            }
-        }
     }
 }

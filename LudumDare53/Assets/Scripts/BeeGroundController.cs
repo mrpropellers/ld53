@@ -50,8 +50,10 @@ namespace LeftOut.LudumDare
             if (CanPollinate(m_CurrentFlower))
             {
                 Debug.Log("Pollinating.");
-                m_CurrentFlower.ReceivePollen(BodyState.YieldPollen());
-                DidPollinate = true;
+                if (m_CurrentFlower.ReceivePollen(BodyState.YieldPollen()))
+                {
+                    DidPollinate = true;
+                }
             }
             else if (!BodyState.HasPollen)
             {
