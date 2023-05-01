@@ -104,7 +104,7 @@ namespace LeftOut.LudumDare
                 // Select and place flower
                 // TODO: assign specific colors
                 var randPrimary = Pollen.NameToColor[(Pollen.ColorNames)Random.Range(0, 3)];
-                Flower.SpawnNewFlower(m_FlowerPrefabs[counter % m_FlowerPrefabs.Length], new Pollen(randPrimary, null), p3, m_Terrain);
+                Flower.SpawnNewFlower(m_FlowerPrefabs[counter % m_FlowerPrefabs.Length], new Pollen(randPrimary, null), p3, m_Terrain, shouldAnim: false);
                 counter++;
             }
         }
