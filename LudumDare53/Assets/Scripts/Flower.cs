@@ -25,7 +25,7 @@ namespace LeftOut.LudumDare
         Renderer m_FlowerRenderer;
         static readonly int BaseColor = Shader.PropertyToID("_BaseColor");
 
-        public bool ShouldAnimate { get; private set; }
+        bool ShouldAnimate { get; set; }
 
         public Transform LandingPointCenter => FlowerCenter;
         // Start is called before the first frame update
@@ -77,7 +77,7 @@ namespace LeftOut.LudumDare
             var points = FastPoissonDiskSampling.Sampling(pos - m_SpawnRadiusVector, pos + m_SpawnRadiusVector, m_SpawnRadiusDistance);
             foreach (var p in points)
             {
-                SpawnNewFlower(gameObject, newColor, new Vector3(p.x, 0, p.y), m_Terrain);
+                SpawnNewFlower(incomingPollen.Parent.gameObject, newColor, new Vector3(p.x, 0, p.y), m_Terrain);
             }
         }
         
