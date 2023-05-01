@@ -64,6 +64,8 @@ namespace LeftOut.LudumDare.Tutorial
             internal float PreDelay { get; private set; }
             
             // Amount of time the prompt can stay in the queue before needing to be re-triggered
+            // TODO: This should be replaced with a Condition check which checks whether conditions are still
+            //       valid to fire this prompt once it reaches the front of the queue
             [field: SerializeField]
             [field: Min(0f)]
             internal float ExpirationTime { get; private set; }
@@ -73,8 +75,13 @@ namespace LeftOut.LudumDare.Tutorial
             [field: SerializeField]
             internal AtomEventBase Trigger { get; private set; }
             
+            // TODO: Merge this field into an ExitCondition box that can be either action performed OR delay
             [field: SerializeField]
             internal string ActionName { get; private set; }
+            [field: SerializeField]
+            internal float DisplayTime { get; private set; }
+            [field: SerializeField]
+            internal bool MustPerform { get; private set; }
             
             [SerializeField]
             List<ControlSpecificText> Substitutions;
@@ -125,11 +132,13 @@ namespace LeftOut.LudumDare.Tutorial
                         }
                         OnTutorialReady.Invoke(this);
                         break;
-                    case Status.Active:
                     case Status.Defused:
                     case Status.Complete:
                         Debug.LogWarning("Prompt was triggered more than once, unsubscribing to callback.");
                         Trigger.UnregisterListener(this);
+                        break;
+                    case Status.Active:
+                        Debug.LogWarning("Prompt triggered again while still displaying - doing nothing.");
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
@@ -199,11 +208,11 @@ namespace LeftOut.LudumDare.Tutorial
 
         public void OnEventRaised(InputAction.CallbackContext context)
         {
-            Debug.Log($"{context.action.name} {context.phase}");
             if (!context.performed)
                 return;
             if (IsPlayingPrompt && m_ActivePrompt.ActionName.Equals(context.action.name))
             {
+                Debug.Log($"Tutorial observed: {context.action.name} {context.phase} -- processing.");
                 if (m_ActivePrompt.CurrentStatus == Prompt.Status.Defused)
                 {
                     Debug.Log("Prompt already defused, just waiting for completion.");
@@ -247,14 +256,32 @@ namespace LeftOut.LudumDare.Tutorial
             }
 
             // If we get to here, no prompts playing right now, let's start one!
-            StartCoroutine(PlayPrompt(prompt));
+            m_PromptsWaiting.Enqueue(prompt);
+            StartCoroutine(ProcessPromptQueue());
         }
         
-        IEnumerator PlayPrompt(Prompt prompt)
+        IEnumerator ProcessPromptQueue()
         {
-            m_ActivePrompt = prompt;
-            while (IsPlayingPrompt)
+            while (m_PromptsWaiting.Any())
             {
+                // TODO: This logic is messy could definitely be cleaned up with a little time/thought
+                Prompt prompt;
+                m_ActivePrompt = null;
+                while (m_PromptsWaiting.TryDequeue(out prompt))
+                {
+                    if (prompt.IsExpired)
+                    {
+                        Debug.Log($"{prompt} expired in queue, discarding");
+                        continue;
+                    }
+                    // If it's not expired, keep it and leave this loop
+                    m_ActivePrompt = prompt;
+                    break;
+                }
+                
+                // Check whether we found a prompt that can be displayed
+                if (!IsPlayingPrompt)
+                    break;
                 prompt.CurrentStatus = Prompt.Status.Active;
                 var promptText = prompt.GetPromptText(m_CurrentControlScheme);
                 Debug.Log(promptText);
@@ -268,34 +295,41 @@ namespace LeftOut.LudumDare.Tutorial
                     DOVirtual.Float(0f, 1f, TextFadeTime, val => PromptBox.alpha = val);
                     yield return new WaitForSeconds(TextFadeTime);
                 }
-                var startTime = Time.time;
-                while (Time.time - startTime < PromptTimeout && prompt.CurrentStatus == Prompt.Status.Active)
-                    yield return null;
-                if (prompt.CurrentStatus == Prompt.Status.Active)
+
+                // If no display time specified, we wait for the Action to happen
+                if (Mathf.Approximately(prompt.DisplayTime, 0f))
                 {
-                    Debug.LogWarning($"{prompt} timed out.");
+                    var startTime = Time.time;
+                    while (Time.time - startTime < PromptTimeout && prompt.CurrentStatus == Prompt.Status.Active)
+                        yield return null;
+                    if (prompt.CurrentStatus == Prompt.Status.Active)
+                    {
+                        if (prompt.MustPerform)
+                        {
+                            Debug.LogWarning($"{prompt} timed out and must be performed. Recycling");
+                            prompt.CurrentStatus = Prompt.Status.Latent;
+                        }
+                        else
+                        {
+                            Debug.LogWarning($"{prompt} timed out. Defusing...");
+                            Defuse(prompt);
+                        }
+                    }
+                }
+                // Otherwise, we defuse when the displaytime has elapsed
+                else
+                {
+                    yield return new WaitForSeconds(prompt.DisplayTime);
                     Defuse(prompt);
                 }
                 Debug.Log("Fade out.");
                 DOVirtual.Float(1f, 0f, TextFadeTime, val => PromptBox.alpha = val);
                 yield return new WaitForSeconds(TextFadeTime);
-                if (prompt.CurrentStatus != Prompt.Status.Defused)
+                if (prompt.CurrentStatus != Prompt.Status.Defused && prompt.CurrentStatus != Prompt.Status.Latent)
                 {
                     Debug.LogWarning($"Something changed status unexpectedly to {prompt.CurrentStatus}: {prompt}");
                 }
                 prompt.CurrentStatus = Prompt.Status.Complete;
-                m_ActivePrompt = null;
-                while (m_PromptsWaiting.TryDequeue(out prompt))
-                {
-                    if (prompt.IsExpired)
-                    {
-                        Debug.Log($"{prompt} expired in queue, discarding");
-                        continue;
-                    }
-                    // If it's not expired, keep it and leave this loop
-                    m_ActivePrompt = prompt;
-                    break;
-                }
             }
         }
 

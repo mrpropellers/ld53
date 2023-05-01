@@ -405,6 +405,7 @@ GameObject:
   - component: {fileID: 609483233}
   - component: {fileID: 609483232}
   - component: {fileID: 609483231}
+  - component: {fileID: 609483236}
   m_Layer: 0
   m_Name: Tutorial
   m_TagString: Untagged
@@ -428,12 +429,14 @@ MonoBehaviour:
   Prompts:
   - PromptTemplate: Use BUTTON to turn left and right.
     <PreDelay>k__BackingField: 0
-    <ExpirationTime>k__BackingField: 999999
+    <ExpirationTime>k__BackingField: 99999
     <Trigger>k__BackingField: {fileID: 11400000, guid: 9d3f2de44c1d0474792acbebb7d00957,
       type: 2}
     <ActionName>k__BackingField: Move
+    <DisplayTime>k__BackingField: 0
+    <MustPerform>k__BackingField: 0
     Substitutions:
-    - KeyboardMouse: W and D
+    - KeyboardMouse: '[W] and [D]'
       Gamepad: <font="EsquireGenericGamepdFont_CS SDF">w</font>
   - PromptTemplate: Press BUTTON to take off.
     <PreDelay>k__BackingField: 0
@@ -441,40 +444,79 @@ MonoBehaviour:
     <Trigger>k__BackingField: {fileID: 11400000, guid: 9d3f2de44c1d0474792acbebb7d00957,
       type: 2}
     <ActionName>k__BackingField: Takeoff
+    <DisplayTime>k__BackingField: 0
+    <MustPerform>k__BackingField: 0
     Substitutions:
     - KeyboardMouse: '[E]'
       Gamepad: <font="EsquireGenericGamepdFont_CS SDF">,</font>
-  - PromptTemplate: Use BUTTON to maneuver in the air. \n (You can invert the y-axis
+  - PromptTemplate: Use BUTTON to maneuver in the air. <br> (You can invert the y-axis
       in the settings.)
-    <PreDelay>k__BackingField: 2
+    <PreDelay>k__BackingField: 1.5
     <ExpirationTime>k__BackingField: 999999
     <Trigger>k__BackingField: {fileID: 11400000, guid: 9d3f2de44c1d0474792acbebb7d00957,
       type: 2}
-    <ActionName>k__BackingField: Maneuver
+    <ActionName>k__BackingField: 
+    <DisplayTime>k__BackingField: 3.5
+    <MustPerform>k__BackingField: 0
     Substitutions:
     - KeyboardMouse: '[WASD]'
       Gamepad: <font="EsquireGenericGamepdFont_CS SDF">8</font>
-  - PromptTemplate: Hold BUTTON to speed up.
-    <PreDelay>k__BackingField: 0
-    <ExpirationTime>k__BackingField: 999999
-    <Trigger>k__BackingField: {fileID: 11400000, guid: 9d3f2de44c1d0474792acbebb7d00957,
+  - PromptTemplate: Hold BUTTON to speed up while in flight.
+    <PreDelay>k__BackingField: 2
+    <ExpirationTime>k__BackingField: 10
+    <Trigger>k__BackingField: {fileID: 11400000, guid: 530a7243e4426b7499ec1b25600c5b9b,
       type: 2}
     <ActionName>k__BackingField: Throttle
+    <DisplayTime>k__BackingField: 0
+    <MustPerform>k__BackingField: 1
     Substitutions:
     - KeyboardMouse: '[LShift]'
       Gamepad: <font="EsquireGenericGamepdFont_CS SDF">v</font>
   - PromptTemplate: Press BUTTON to land on a flower.
     <PreDelay>k__BackingField: 0
     <ExpirationTime>k__BackingField: 1
-    <Trigger>k__BackingField: {fileID: 11400000, guid: 39daed027442ba74f929838ab522ad7f,
+    <Trigger>k__BackingField: {fileID: 11400000, guid: a97005c4c9abc1c41b0d18d890dc21a8,
       type: 2}
     <ActionName>k__BackingField: Land
+    <DisplayTime>k__BackingField: 0
+    <MustPerform>k__BackingField: 1
     Substitutions:
     - KeyboardMouse: '[E]'
       Gamepad: <font="EsquireGenericGamepdFont_CS SDF">,</font>
-  GameStartDelay: 3
-  TextFadeTime: 2
-  PromptTimeout: 10
+  - PromptTemplate: Press BUTTON to gather pollen.
+    <PreDelay>k__BackingField: 0
+    <ExpirationTime>k__BackingField: 1
+    <Trigger>k__BackingField: {fileID: 11400000, guid: 8a6b797d1b08cea4baa01a98970cf46d,
+      type: 2}
+    <ActionName>k__BackingField: Pollinate
+    <DisplayTime>k__BackingField: 0
+    <MustPerform>k__BackingField: 1
+    Substitutions:
+    - KeyboardMouse: '[F]'
+      Gamepad: <font="EsquireGenericGamepdFont_CS SDF">Q</font>
+  - PromptTemplate: Take your pollen to a new flower.
+    <PreDelay>k__BackingField: 0
+    <ExpirationTime>k__BackingField: 9999999
+    <Trigger>k__BackingField: {fileID: 11400000, guid: 3e021244e02abd340a21f75d905ec235,
+      type: 2}
+    <ActionName>k__BackingField: 
+    <DisplayTime>k__BackingField: 4
+    <MustPerform>k__BackingField: 0
+    Substitutions: []
+  - PromptTemplate: Press BUTTON to pollinate
+    <PreDelay>k__BackingField: 0
+    <ExpirationTime>k__BackingField: 1
+    <Trigger>k__BackingField: {fileID: 11400000, guid: 7524bf0d182535d4791786605687c100,
+      type: 2}
+    <ActionName>k__BackingField: Pollinate
+    <DisplayTime>k__BackingField: 0
+    <MustPerform>k__BackingField: 1
+    Substitutions:
+    - KeyboardMouse: '[F]'
+      Gamepad: <font="EsquireGenericGamepdFont_CS SDF">Q</font>
+  GameStartDelay: 2
+  TextFadeTime: 1.5
+  PromptTimeout: 6
   ControlSchemeChanged: {fileID: 11400000, guid: 9be71b3e72d744f49b09b174ffb40bc8,
     type: 2}
   PlayerActionTaken: {fileID: 11400000, guid: 1ed57170dd1cbeb4693753a4ccd92f4a, type: 2}
@@ -640,6 +682,25 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &609483236
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 609483228}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14bf3ee8bfa7404469d9e7c89da527d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FlowerSensedInFlight: {fileID: 11400000, guid: a97005c4c9abc1c41b0d18d890dc21a8,
+    type: 2}
+  HasLanded: {fileID: 11400000, guid: 8a6b797d1b08cea4baa01a98970cf46d, type: 2}
+  GotPollen: {fileID: 11400000, guid: 3e021244e02abd340a21f75d905ec235, type: 2}
+  CanPollinate: {fileID: 11400000, guid: 7524bf0d182535d4791786605687c100, type: 2}
+  TookOff: {fileID: 11400000, guid: 530a7243e4426b7499ec1b25600c5b9b, type: 2}
+  FlowerSensed: {fileID: 11400000, guid: 39daed027442ba74f929838ab522ad7f, type: 2}
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0

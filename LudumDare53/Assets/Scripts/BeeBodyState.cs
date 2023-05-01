@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace LeftOut.LudumDare
 {
@@ -10,6 +11,8 @@ namespace LeftOut.LudumDare
         public bool HasPollen => m_Pollen != null;
         public Flower PollenSource => m_Pollen.Parent;
 
+        public UnityEvent<BeeBodyState> StateChanged;
+
         public Pollen YieldPollen()
         {
             if (m_Pollen == null)
@@ -18,6 +21,7 @@ namespace LeftOut.LudumDare
             }
             var p = m_Pollen;
             m_Pollen = null;
+            StateChanged?.Invoke(this);
             return p;
         }
 
@@ -29,6 +33,7 @@ namespace LeftOut.LudumDare
             }
 
             m_Pollen = pollen;
+            StateChanged?.Invoke(this);
         }
     }
 }
