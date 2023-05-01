@@ -13,6 +13,11 @@ namespace LeftOut.LudumDare
 
         public UnityEvent<BeeBodyState> StateChanged;
 
+        void Start()
+        {
+            m_Pollen = null;
+        }
+
         public Pollen YieldPollen()
         {
             if (m_Pollen == null)

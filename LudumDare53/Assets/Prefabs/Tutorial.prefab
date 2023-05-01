@@ -1,0 +1,312 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &873835387781174728
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 873835387781174775}
+  - component: {fileID: 873835387781174730}
+  - component: {fileID: 873835387781174774}
+  - component: {fileID: 873835387781174773}
+  - component: {fileID: 873835387781174772}
+  - component: {fileID: 873835387781174731}
+  - component: {fileID: 873835387781174768}
+  m_Layer: 0
+  m_Name: Tutorial
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &873835387781174775
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 873835387781174728}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0, y: 0, z: 0}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 0, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0, y: 0}
+--- !u!114 &873835387781174730
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 873835387781174728}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7122888fa694936b7d5174deeb981e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  PromptBox: {fileID: 873835387781174773}
+  Prompts:
+  - PromptTemplate: Use BUTTON to turn left and right.
+    <PreDelay>k__BackingField: 0
+    <ExpirationTime>k__BackingField: 99999
+    <Trigger>k__BackingField: {fileID: 11400000, guid: 9d3f2de44c1d0474792acbebb7d00957,
+      type: 2}
+    <ActionName>k__BackingField: Move
+    <DisplayTime>k__BackingField: 0
+    <MustPerform>k__BackingField: 0
+    Substitutions:
+    - KeyboardMouse: '[W] and [D]'
+      Gamepad: <font="EsquireGenericGamepdFont_CS SDF">w</font>
+  - PromptTemplate: Press BUTTON to take off.
+    <PreDelay>k__BackingField: 0
+    <ExpirationTime>k__BackingField: 999999
+    <Trigger>k__BackingField: {fileID: 11400000, guid: 9d3f2de44c1d0474792acbebb7d00957,
+      type: 2}
+    <ActionName>k__BackingField: Takeoff
+    <DisplayTime>k__BackingField: 0
+    <MustPerform>k__BackingField: 0
+    Substitutions:
+    - KeyboardMouse: '[E]'
+      Gamepad: <font="EsquireGenericGamepdFont_CS SDF">,</font>
+  - PromptTemplate: Use BUTTON to maneuver in the air. <br> (You can invert the y-axis
+      in the settings.)
+    <PreDelay>k__BackingField: 1.5
+    <ExpirationTime>k__BackingField: 999999
+    <Trigger>k__BackingField: {fileID: 11400000, guid: 9d3f2de44c1d0474792acbebb7d00957,
+      type: 2}
+    <ActionName>k__BackingField: 
+    <DisplayTime>k__BackingField: 3.5
+    <MustPerform>k__BackingField: 0
+    Substitutions:
+    - KeyboardMouse: '[WASD]'
+      Gamepad: <font="EsquireGenericGamepdFont_CS SDF">8</font>
+  - PromptTemplate: Hold BUTTON to speed up while in flight.
+    <PreDelay>k__BackingField: 2
+    <ExpirationTime>k__BackingField: 10
+    <Trigger>k__BackingField: {fileID: 11400000, guid: 530a7243e4426b7499ec1b25600c5b9b,
+      type: 2}
+    <ActionName>k__BackingField: Throttle
+    <DisplayTime>k__BackingField: 0
+    <MustPerform>k__BackingField: 1
+    Substitutions:
+    - KeyboardMouse: '[LShift]'
+      Gamepad: <font="EsquireGenericGamepdFont_CS SDF">v</font>
+  - PromptTemplate: Press BUTTON to land on a flower.
+    <PreDelay>k__BackingField: 0
+    <ExpirationTime>k__BackingField: 1
+    <Trigger>k__BackingField: {fileID: 11400000, guid: a97005c4c9abc1c41b0d18d890dc21a8,
+      type: 2}
+    <ActionName>k__BackingField: Land
+    <DisplayTime>k__BackingField: 0
+    <MustPerform>k__BackingField: 1
+    Substitutions:
+    - KeyboardMouse: '[E]'
+      Gamepad: <font="EsquireGenericGamepdFont_CS SDF">,</font>
+  - PromptTemplate: Press BUTTON to gather pollen.
+    <PreDelay>k__BackingField: 0
+    <ExpirationTime>k__BackingField: 1
+    <Trigger>k__BackingField: {fileID: 11400000, guid: 8a6b797d1b08cea4baa01a98970cf46d,
+      type: 2}
+    <ActionName>k__BackingField: Pollinate
+    <DisplayTime>k__BackingField: 0
+    <MustPerform>k__BackingField: 1
+    Substitutions:
+    - KeyboardMouse: '[F]'
+      Gamepad: <font="EsquireGenericGamepdFont_CS SDF">Q</font>
+  - PromptTemplate: Take your pollen to a new flower.
+    <PreDelay>k__BackingField: 0
+    <ExpirationTime>k__BackingField: 9999999
+    <Trigger>k__BackingField: {fileID: 11400000, guid: 3e021244e02abd340a21f75d905ec235,
+      type: 2}
+    <ActionName>k__BackingField: 
+    <DisplayTime>k__BackingField: 4
+    <MustPerform>k__BackingField: 0
+    Substitutions: []
+  - PromptTemplate: Press BUTTON to pollinate
+    <PreDelay>k__BackingField: 0
+    <ExpirationTime>k__BackingField: 1
+    <Trigger>k__BackingField: {fileID: 11400000, guid: 7524bf0d182535d4791786605687c100,
+      type: 2}
+    <ActionName>k__BackingField: Pollinate
+    <DisplayTime>k__BackingField: 0
+    <MustPerform>k__BackingField: 1
+    Substitutions:
+    - KeyboardMouse: '[F]'
+      Gamepad: <font="EsquireGenericGamepdFont_CS SDF">Q</font>
+  GameStartDelay: 2
+  TextFadeTime: 1.5
+  PromptTimeout: 6
+  ControlSchemeChanged: {fileID: 11400000, guid: 9be71b3e72d744f49b09b174ffb40bc8,
+    type: 2}
+  PlayerActionTaken: {fileID: 11400000, guid: 1ed57170dd1cbeb4693753a4ccd92f4a, type: 2}
+  GameStartEvent: {fileID: 11400000, guid: 9d3f2de44c1d0474792acbebb7d00957, type: 2}
+--- !u!222 &873835387781174774
+CanvasRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 873835387781174728}
+  m_CullTransparentMesh: 1
+--- !u!114 &873835387781174773
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 873835387781174728}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Material: {fileID: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_RaycastTarget: 1
+  m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
+  m_Maskable: 1
+  m_OnCullStateChanged:
+    m_PersistentCalls:
+      m_Calls: []
+  m_text: 
+  m_isRightToLeft: 0
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontSharedMaterials: []
+  m_fontMaterial: {fileID: 0}
+  m_fontMaterials: []
+  m_fontColor32:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+  m_enableVertexGradient: 0
+  m_colorMode: 3
+  m_fontColorGradient:
+    topLeft: {r: 1, g: 1, b: 1, a: 1}
+    topRight: {r: 1, g: 1, b: 1, a: 1}
+    bottomLeft: {r: 1, g: 1, b: 1, a: 1}
+    bottomRight: {r: 1, g: 1, b: 1, a: 1}
+  m_fontColorGradientPreset: {fileID: 0}
+  m_spriteAsset: {fileID: 0}
+  m_tintAllSprites: 0
+  m_StyleSheet: {fileID: 0}
+  m_TextStyleHashCode: -1183493901
+  m_overrideHtmlColors: 0
+  m_faceColor:
+    serializedVersion: 2
+    rgba: 4294967295
+  m_fontSize: 36
+  m_fontSizeBase: 36
+  m_fontWeight: 400
+  m_enableAutoSizing: 0
+  m_fontSizeMin: 18
+  m_fontSizeMax: 72
+  m_fontStyle: 9
+  m_HorizontalAlignment: 2
+  m_VerticalAlignment: 512
+  m_textAlignment: 65535
+  m_characterSpacing: 0
+  m_wordSpacing: 0
+  m_lineSpacing: 0
+  m_lineSpacingMax: 0
+  m_paragraphSpacing: 0
+  m_charWidthMaxAdj: 0
+  m_enableWordWrapping: 1
+  m_wordWrappingRatios: 0.4
+  m_overflowMode: 0
+  m_linkedTextComponent: {fileID: 0}
+  parentLinkedComponent: {fileID: 0}
+  m_enableKerning: 1
+  m_enableExtraPadding: 0
+  checkPaddingRequired: 0
+  m_isRichText: 1
+  m_parseCtrlCharacters: 1
+  m_isOrthographic: 1
+  m_isCullingEnabled: 0
+  m_horizontalMapping: 0
+  m_verticalMapping: 0
+  m_uvLineOffset: 0
+  m_geometrySortingOrder: 0
+  m_IsTextObjectScaleStatic: 0
+  m_VertexBufferAutoSizeReduction: 0
+  m_useMaxVisibleDescender: 1
+  m_pageToDisplay: 1
+  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_isUsingLegacyAnimationComponent: 0
+  m_isVolumetricText: 0
+  m_hasFontAssetChanged: 0
+  m_baseMaterial: {fileID: 0}
+  m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!223 &873835387781174772
+Canvas:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 873835387781174728}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_RenderMode: 0
+  m_Camera: {fileID: 0}
+  m_PlaneDistance: 102.88
+  m_PixelPerfect: 0
+  m_ReceivesEvents: 1
+  m_OverrideSorting: 0
+  m_OverridePixelPerfect: 0
+  m_SortingBucketNormalizedSize: 0
+  m_AdditionalShaderChannelsFlag: 25
+  m_SortingLayerID: 0
+  m_SortingOrder: 0
+  m_TargetDisplay: 0
+--- !u!114 &873835387781174731
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 873835387781174728}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_UiScaleMode: 0
+  m_ReferencePixelsPerUnit: 100
+  m_ScaleFactor: 1
+  m_ReferenceResolution: {x: 800, y: 600}
+  m_ScreenMatchMode: 0
+  m_MatchWidthOrHeight: 0
+  m_PhysicalUnit: 3
+  m_FallbackScreenDPI: 96
+  m_DefaultSpriteDPI: 96
+  m_DynamicPixelsPerUnit: 1
+  m_PresetInfoIsWorld: 0
+--- !u!114 &873835387781174768
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 873835387781174728}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14bf3ee8bfa7404469d9e7c89da527d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FlowerSensedInFlight: {fileID: 11400000, guid: a97005c4c9abc1c41b0d18d890dc21a8,
+    type: 2}
+  HasLanded: {fileID: 11400000, guid: 8a6b797d1b08cea4baa01a98970cf46d, type: 2}
+  GotPollen: {fileID: 11400000, guid: 3e021244e02abd340a21f75d905ec235, type: 2}
+  CanPollinate: {fileID: 11400000, guid: 7524bf0d182535d4791786605687c100, type: 2}
+  TookOff: {fileID: 11400000, guid: 530a7243e4426b7499ec1b25600c5b9b, type: 2}
+  FlowerSensed: {fileID: 11400000, guid: 39daed027442ba74f929838ab522ad7f, type: 2}

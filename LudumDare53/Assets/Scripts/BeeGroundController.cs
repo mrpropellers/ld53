@@ -20,6 +20,9 @@ namespace LeftOut.LudumDare
         [SerializeField]
         float YawVelocity = 50f;
 
+        [SerializeField]
+        UnityAtoms.AtomEventBase SuccessfulPollination;
+
         public bool DidPollinate { get; set; } = false;
 
         bool CanPollinate(Flower flower)
@@ -53,6 +56,7 @@ namespace LeftOut.LudumDare
                 if (m_CurrentFlower.ReceivePollen(BodyState.YieldPollen()))
                 {
                     DidPollinate = true;
+                    SuccessfulPollination.Raise();
                 }
             }
             else if (!BodyState.HasPollen)
