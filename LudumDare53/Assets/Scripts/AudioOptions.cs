@@ -7,7 +7,7 @@ namespace LeftOut.LudumDare
     {
         public void SetDefaults()
         {
-            SetMusic(100f);
+            SetMusic(0f);
             SetSFX(75f);
         }
         
