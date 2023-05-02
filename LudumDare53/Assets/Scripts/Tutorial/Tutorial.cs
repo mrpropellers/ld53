@@ -7,6 +7,7 @@ using TMPro;
 using UnityAtoms;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 namespace LeftOut.LudumDare.Tutorial
 {
@@ -153,11 +154,11 @@ namespace LeftOut.LudumDare.Tutorial
         bool IsPlayingPrompt => m_ActivePrompt != null;
 
         [SerializeField]
+        Image PromptBackground;
+        [SerializeField]
         TextMeshProUGUI PromptBox;
         [SerializeField]
         List<Prompt> Prompts;
-        [SerializeField]
-        float GameStartDelay = 3f;
         [SerializeField]
         float TextFadeTime = 2f;
         [SerializeField]
@@ -185,7 +186,6 @@ namespace LeftOut.LudumDare.Tutorial
             }
 
             m_PromptsWaiting = new Queue<Prompt>();
-            StartCoroutine(RaiseAfter(GameStartEvent, GameStartDelay));
         }
 
         void OnDisable()
@@ -228,12 +228,6 @@ namespace LeftOut.LudumDare.Tutorial
             }
         }
 
-        static IEnumerator RaiseAfter(AtomEventBase atomEvent, float delay)
-        {
-            yield return new WaitForSeconds(delay);
-            atomEvent.Raise();
-        }
-        
         void Defuse(Prompt prompt)
         {
             if (prompt.CurrentStatus != Prompt.Status.Active)
@@ -258,6 +252,14 @@ namespace LeftOut.LudumDare.Tutorial
             // If we get to here, no prompts playing right now, let's start one!
             m_PromptsWaiting.Enqueue(prompt);
             StartCoroutine(ProcessPromptQueue());
+        }
+
+        void SetPromptAlpha(float val)
+        {
+            PromptBox.alpha = val;
+            var c = PromptBackground.color;
+            c.a = val * 0.9f;
+            PromptBackground.color = c;
         }
         
         IEnumerator ProcessPromptQueue()
@@ -286,13 +288,13 @@ namespace LeftOut.LudumDare.Tutorial
                 var promptText = prompt.GetPromptText(m_CurrentControlScheme);
                 Debug.Log(promptText);
                 PromptBox.text = promptText;
-                PromptBox.alpha = 0f;
+                SetPromptAlpha(0f);
                 yield return new WaitForSeconds(prompt.PreDelay);
                 // Check whether prompt was defused during the predelay period
                 if (prompt.CurrentStatus == Prompt.Status.Active)
                 {
                     Debug.Log("Fade in");
-                    DOVirtual.Float(0f, 1f, TextFadeTime, val => PromptBox.alpha = val);
+                    DOVirtual.Float(0f, 1f, TextFadeTime, SetPromptAlpha);
                     yield return new WaitForSeconds(TextFadeTime);
                 }
 
@@ -323,7 +325,7 @@ namespace LeftOut.LudumDare.Tutorial
                     Defuse(prompt);
                 }
                 Debug.Log("Fade out.");
-                DOVirtual.Float(1f, 0f, TextFadeTime, val => PromptBox.alpha = val);
+                DOVirtual.Float(1f, 0f, TextFadeTime, SetPromptAlpha);
                 yield return new WaitForSeconds(TextFadeTime);
                 if (prompt.CurrentStatus != Prompt.Status.Defused && prompt.CurrentStatus != Prompt.Status.Latent)
                 {

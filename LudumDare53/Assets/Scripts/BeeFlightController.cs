@@ -1,6 +1,7 @@
 using System;
 using DG.Tweening;
 using Unity.VisualScripting;
+using UnityAtoms.BaseAtoms;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -14,6 +15,9 @@ namespace LeftOut.LudumDare
         Vector3 m_RotationalTorque;
         float m_Speed;
 
+        [SerializeField]
+        BoolReference InvertY;
+        
         [SerializeField]
         InputActionReference MoveAction;
         [SerializeField]
@@ -40,6 +44,10 @@ namespace LeftOut.LudumDare
         void Update()
         {
             var moveInput = MoveAction.action.ReadValue<Vector2>();
+            if (InvertY)
+            {
+                moveInput.y = -moveInput.y;
+            }
             m_Rigidbody.maxAngularVelocity = MaxAngularVelocity;
             m_RotationalTorque = new Vector3(moveInput.y, moveInput.x, 0);
 

@@ -20,7 +20,7 @@ namespace LeftOut.LudumDare
         [SerializeField]
         AtomEventBase TookOff;
 
-        BeeLandingHandler FlightState;
+        BeeControlSwitcher FlightState;
         BeeBodyState BodyState;
 
         [SerializeField]
@@ -34,7 +34,7 @@ namespace LeftOut.LudumDare
         void OnEnable()
         {
             // TODO: Wire these up without using Finds (may want to utilize an InstanceTracker-type utility)
-            FlightState = FindObjectOfType<BeeLandingHandler>();
+            FlightState = FindObjectOfType<BeeControlSwitcher>();
             BodyState = FindObjectOfType<BeeBodyState>();
             FlowerSensed.Register(OnFlowerSensed);
             FlightState.StateChanged.AddListener(OnFlyingStateChanged);
@@ -48,7 +48,7 @@ namespace LeftOut.LudumDare
             BodyState.StateChanged.RemoveListener(OnBodyStateChanged);
         }
 
-        void OnFlyingStateChanged(BeeLandingHandler handler)
+        void OnFlyingStateChanged(BeeControlSwitcher handler)
         {
             if (handler.IsInFlight)
             {
