@@ -358,7 +358,7 @@ MonoBehaviour:
   - {fileID: 2635304647786824235, guid: b6383639feed805d8b007c0376956c90, type: 3}
   - {fileID: 2635304647786824235, guid: 4365242b2b75c43719ba5c4fe14efaaf, type: 3}
   - {fileID: 2635304647786824235, guid: 4365242b2b75c43719ba5c4fe14efaaf, type: 3}
-  - {fileID: 2635304647786824235, guid: 4365242b2b75c43719ba5c4fe14efaaf, type: 3}
+  - {fileID: 2635304647786824235, guid: ae155d20ce397382cbfb49b0116692cd, type: 3}
   m_MinDistance: 15
 --- !u!1 &330585543
 GameObject:
@@ -558,7 +558,7 @@ Light:
   m_Type: 1
   m_Shape: 0
   m_Color: {r: 0.990566, g: 0.85506403, b: 0.9288113, a: 1}
-  m_Intensity: 1.5
+  m_Intensity: 1.2
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208
@@ -601,7 +601,7 @@ Light:
   m_LightShadowCasterMode: 0
   m_AreaSize: {x: 1, y: 1}
   m_BounceIntensity: 1
-  m_ColorTemperature: 5390
+  m_ColorTemperature: 5038
   m_UseColorTemperature: 1
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
@@ -1848,12 +1848,12 @@ PrefabInstance:
     - target: {fileID: 65488220842897265, guid: 82fc6992705649e47a2b42e153ba6ab7,
         type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.97128487
+      value: -0.9712849
       objectReference: {fileID: 0}
     - target: {fileID: 65488220842897265, guid: 82fc6992705649e47a2b42e153ba6ab7,
         type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.17139386
+      value: 0.17139384
       objectReference: {fileID: 0}
     - target: {fileID: 7127277826320469384, guid: 82fc6992705649e47a2b42e153ba6ab7,
         type: 3}

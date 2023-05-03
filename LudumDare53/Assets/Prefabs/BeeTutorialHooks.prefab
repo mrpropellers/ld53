@@ -327,11 +327,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1116252582106120871, guid: c78f6b287fce3cf4b9939a3729033d52,
         type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1116252582106120871, guid: c78f6b287fce3cf4b9939a3729033d52,
-        type: 3}
       propertyPath: GamePaused
       value: 
       objectReference: {fileID: 11400000, guid: 8760283e548c7524a9692993b5c57e03,
@@ -358,8 +353,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3362693549497062797, guid: c78f6b287fce3cf4b9939a3729033d52,
         type: 3}
-      propertyPath: m_Enabled
-      value: 0
+      propertyPath: PollinationDance
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 3362693549497062797, guid: c78f6b287fce3cf4b9939a3729033d52,
         type: 3}
@@ -955,9 +950,9 @@ Animation:
   m_GameObject: {fileID: 7127277825939605574}
   m_Enabled: 1
   serializedVersion: 3
-  m_Animation: {fileID: 0}
+  m_Animation: {fileID: 7400000, guid: f3409aaad8791b340ad698a08abb20fe, type: 2}
   m_Animations:
-  - {fileID: 0}
+  - {fileID: 7400000, guid: f3409aaad8791b340ad698a08abb20fe, type: 2}
   m_WrapMode: 0
   m_PlayAutomatically: 0
   m_AnimatePhysics: 0

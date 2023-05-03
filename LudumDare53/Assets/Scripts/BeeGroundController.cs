@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System;
+using System.Collections;
+using UnityEngine;
 using UnityEngine.InputSystem;
 
 namespace LeftOut.LudumDare
@@ -6,7 +8,11 @@ namespace LeftOut.LudumDare
     [RequireComponent(typeof(BeeBodyState))]
     public class BeeGroundController : MonoBehaviour
     {
+        public const string k_ActionMapName = "BeeLanded";
+        
         Flower m_CurrentFlower;
+        bool m_InAnimation = true;
+        InputActionMap m_GroundedActions;
 
         [SerializeField]
         BeeBodyState BodyState;
@@ -19,11 +25,20 @@ namespace LeftOut.LudumDare
 
         [SerializeField]
         float YawVelocity = 50f;
+        [SerializeField]
+        Animation PollinationDance;
+        [SerializeField]
+        ConstantLookAt BeeLookOverride;
 
         [SerializeField]
         UnityAtoms.AtomEventBase SuccessfulPollination;
 
         public bool DidPollinate { get; set; } = false;
+
+        void Start()
+        {
+            m_GroundedActions = new InputActionMap(k_ActionMapName);
+        }
 
         bool CanPollinate(Flower flower)
         {
@@ -49,7 +64,18 @@ namespace LeftOut.LudumDare
                 Debug.LogError("Current flower is null!");
                 return;
             }
-            
+    
+            m_GroundedActions.Disable();
+            BeeLookOverride.enabled = false;
+            StartCoroutine(AnimatePollinate());
+        }
+
+        IEnumerator AnimatePollinate()
+        {
+            Debug.Log("starting pollination dance");
+            PollinationDance.Play();
+            yield return new WaitUntil(() => !PollinationDance.isPlaying);
+            Debug.Log("Dance complete.");
             if (CanPollinate(m_CurrentFlower))
             {
                 Debug.Log("Pollinating.");
@@ -59,13 +85,15 @@ namespace LeftOut.LudumDare
                     SuccessfulPollination.Raise();
                 }
             }
-            else if (!BodyState.HasPollen)
+            else
             {
                 Debug.Log("Covering self in pollen.", this);
                 BodyState.CoverSelf(m_CurrentFlower.GivePollen());
             }
+            m_GroundedActions.Enable();
+            BeeLookOverride.enabled = true;
         }
-        
+
         internal void FinishLanding(Flower flower)
         {
             m_CurrentFlower = flower;

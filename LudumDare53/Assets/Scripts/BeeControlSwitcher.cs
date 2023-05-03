@@ -38,8 +38,7 @@ namespace LeftOut.LudumDare
         Rigidbody VisualRigidBody;
         [SerializeField]
         string FlyingActionMapName;
-        [SerializeField]
-        string GroundActionMapName;
+        string GroundActionMapName => BeeGroundController.k_ActionMapName;
         [SerializeField]
         CinemachineVirtualCamera FlyingCamera;
         [SerializeField]

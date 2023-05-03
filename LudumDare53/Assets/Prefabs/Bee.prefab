@@ -187,7 +187,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9384ab8608cdc3d479fe89cd51eed48f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_BindingMode: 1
+  m_BindingMode: 0
   m_FollowOffset: {x: -0.39, y: 0.53, z: 1.21}
   m_XDamping: 1
   m_YDamping: 1
@@ -566,6 +566,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 379ace6e511441b6bddc66c1835a56a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  StateChanged:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!114 &7062071217250275353
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -578,6 +581,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f25579b08dc6e664ea66468ebcc7b2c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  InvertY:
+    _usage: 0
+    _value: 0
+    _constant: {fileID: 0}
+    _variable: {fileID: 0}
+    _variableInstancer: {fileID: 0}
   MoveAction: {fileID: -3552364970006637457, guid: 5de5c0b2d094f644ba302b2ed633c422,
     type: 3}
   ThrottleAction: {fileID: -1916377846673030204, guid: 5de5c0b2d094f644ba302b2ed633c422,
@@ -603,6 +612,8 @@ MonoBehaviour:
   GroundMoveAction: {fileID: -4758858015638054784, guid: 5de5c0b2d094f644ba302b2ed633c422,
     type: 3}
   YawVelocity: 50
+  PollinationDance: {fileID: 0}
+  SuccessfulPollination: {fileID: 0}
 --- !u!114 &1116252582106120871
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -619,12 +630,14 @@ MonoBehaviour:
   LandingSpeed: 3
   VisualRigidBody: {fileID: 1249099952}
   FlyingActionMapName: BeeFlight
-  GroundActionMapName: BeeLanded
   FlyingCamera: {fileID: 7062071218692017471}
   GroundedCamera: {fileID: 1580375266500249858}
   FlowerSensor: {fileID: 8268196617886088768}
   BeeRoot: {fileID: 7062071217250275354}
   StartingState: 1
+  StateChanged:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!54 &7062071217250275355
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1078,6 +1091,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ff459dba021a67449da7df32711a3e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  StopTime: 4
   StaticCamera: {fileID: 1539257058}
   MovingCamera: {fileID: 2212086099031153042}
   MovementTarget: {fileID: 7062071217250275354}
