@@ -50,6 +50,8 @@ namespace LeftOut.LudumDare
         Transform BeeRoot;
         [SerializeField]
         ControlState StartingState;
+        ParticleSystem m_ParticleSystem;
+        ParticleSystem.EmissionModule m_ParticleEmission;
         // [SerializeField]
         // UnityAtoms.AtomEvent<bool> GamePaused;
 
@@ -84,6 +86,8 @@ namespace LeftOut.LudumDare
             m_PlayerInput = GetComponent<PlayerInput>();
             FlowerSensor = GetComponentInChildren<BeeFlowerSensor>();
             m_RootRigidBody = BeeRoot.GetComponent<Rigidbody>();
+            m_ParticleSystem = GetComponentInChildren<ParticleSystem>();
+            m_ParticleEmission = m_ParticleSystem.emission;
             m_FlyingActions = m_PlayerInput.actions.FindActionMap(FlyingActionMapName);
             m_GroundedActions = m_PlayerInput.actions.FindActionMap(GroundActionMapName);
             if (StartingState == ControlState.Grounded)
@@ -288,6 +292,7 @@ namespace LeftOut.LudumDare
 
         IEnumerator TakeOff()
         {
+            m_ParticleEmission.rateOverTime = 8;
             if (m_GroundController.DidPollinate)
             {
                 m_CurrentFlower.TakeOff();
@@ -304,6 +309,7 @@ namespace LeftOut.LudumDare
                 tf.DOMove(target.position, time).SetEase(LandingEase);
                 tf.DORotate(target.rotation.eulerAngles, time).SetEase(LandingEase);
             }
+            m_ParticleEmission.rateOverTime = 0.5f;
             m_CurrentFlower = FlowerSensor.ClosestFlower;
             var target = m_CurrentFlower.LandingPointCenter;
             var landingTime = (VisualRigidBody.position - target.position).magnitude / LandingSpeed;
