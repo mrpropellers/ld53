@@ -11,8 +11,13 @@ namespace LeftOut.LudumDare
         public const string k_ActionMapName = "BeeLanded";
         
         Flower m_CurrentFlower;
-        bool m_InAnimation = true;
         InputActionMap m_GroundedActions;
+        
+        [SerializeField]
+        ParticleSystem m_ParticleSystem;
+
+        ParticleSystem.MainModule m_ParticleMain;
+        ParticleSystem.EmissionModule m_ParticleEmission;
 
         [SerializeField]
         BeeBodyState BodyState;
@@ -43,6 +48,12 @@ namespace LeftOut.LudumDare
         bool CanPollinate(Flower flower)
         {
             return BodyState.HasPollen && BodyState.PollenSource != flower;
+        }
+
+        void Start()
+        {
+            m_ParticleMain = m_ParticleSystem.main;
+            m_ParticleEmission = m_ParticleSystem.emission;
         }
 
         void Update()
@@ -82,13 +93,17 @@ namespace LeftOut.LudumDare
                 if (m_CurrentFlower.ReceivePollen(BodyState.YieldPollen()))
                 {
                     DidPollinate = true;
+                    m_ParticleSystem.Stop();
                     SuccessfulPollination.Raise();
                 }
             }
             else
             {
                 Debug.Log("Covering self in pollen.", this);
-                BodyState.CoverSelf(m_CurrentFlower.GivePollen());
+                var pollen = m_CurrentFlower.GivePollen();
+                BodyState.CoverSelf(pollen);
+                m_ParticleMain.startColor = pollen.Color;
+                m_ParticleSystem.Play();
             }
             m_GroundedActions.Enable();
             BeeLookOverride.enabled = true;
