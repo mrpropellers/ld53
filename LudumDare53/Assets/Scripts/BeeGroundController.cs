@@ -2,6 +2,7 @@
 using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 
 namespace LeftOut.LudumDare
 {
@@ -9,15 +10,17 @@ namespace LeftOut.LudumDare
     public class BeeGroundController : MonoBehaviour
     {
         public const string k_ActionMapName = "BeeLanded";
-        
+        const string k_ShaderBaseColor = "_Color";
+        const string k_ShaderEmissionColor = "_EmissionColor";
+
+        Flower m_PreviousFlower;
         Flower m_CurrentFlower;
         InputActionMap m_GroundedActions;
+        ParticleSystemRenderer m_ParticleRenderer;
         
+        [FormerlySerializedAs("m_ParticleSystem")]
         [SerializeField]
-        ParticleSystem m_ParticleSystem;
-
-        ParticleSystem.MainModule m_ParticleMain;
-        ParticleSystem.EmissionModule m_ParticleEmission;
+        ParticleSystem ParticleSystem;
 
         [SerializeField]
         BeeBodyState BodyState;
@@ -43,6 +46,8 @@ namespace LeftOut.LudumDare
         void Start()
         {
             m_GroundedActions = new InputActionMap(k_ActionMapName);
+            m_ParticleRenderer = ParticleSystem.GetComponent<ParticleSystemRenderer>();
+            ParticleSystem.Stop();
         }
 
         bool CanPollinate(Flower flower)
@@ -50,10 +55,9 @@ namespace LeftOut.LudumDare
             return BodyState.HasPollen && BodyState.PollenSource != flower;
         }
 
-        void Start()
+        bool CanHarvestPollen(Flower flower)
         {
-            m_ParticleMain = m_ParticleSystem.main;
-            m_ParticleEmission = m_ParticleSystem.emission;
+            return !BodyState.HasPollen && m_PreviousFlower != flower;
         }
 
         void Update()
@@ -75,36 +79,54 @@ namespace LeftOut.LudumDare
                 Debug.LogError("Current flower is null!");
                 return;
             }
-    
-            m_GroundedActions.Disable();
-            BeeLookOverride.enabled = false;
-            StartCoroutine(AnimatePollinate());
+            
+            if (!CanPollinate(m_CurrentFlower) && !CanHarvestPollen(m_CurrentFlower))
+            {
+                Debug.Log("Nothing to do on this flower.");
+            }
+            else
+            {
+                m_GroundedActions.Disable();
+                BeeLookOverride.enabled = false;
+                StartCoroutine(AnimatePollinate());
+            }
         }
 
         IEnumerator AnimatePollinate()
         {
-            Debug.Log("starting pollination dance");
             PollinationDance.Play();
             yield return new WaitUntil(() => !PollinationDance.isPlaying);
-            Debug.Log("Dance complete.");
             if (CanPollinate(m_CurrentFlower))
             {
                 Debug.Log("Pollinating.");
                 if (m_CurrentFlower.ReceivePollen(BodyState.YieldPollen()))
                 {
                     DidPollinate = true;
-                    m_ParticleSystem.Stop();
+                    ParticleSystem.Stop();
                     SuccessfulPollination.Raise();
                 }
+                else
+                {
+                    Debug.LogError("This should never happen?");
+                }
             }
-            else
+            else if(CanHarvestPollen(m_CurrentFlower))
             {
                 Debug.Log("Covering self in pollen.", this);
                 var pollen = m_CurrentFlower.GivePollen();
                 BodyState.CoverSelf(pollen);
-                m_ParticleMain.startColor = pollen.Color;
-                m_ParticleSystem.Play();
+                var mbp = new MaterialPropertyBlock();
+                mbp.SetColor(k_ShaderBaseColor, pollen.Color);
+                mbp.SetColor(k_ShaderEmissionColor, pollen.Color);
+                m_ParticleRenderer.SetPropertyBlock(mbp);
+                ParticleSystem.Play();
             }
+            else
+            {
+                Debug.LogError("We shouldn't have started the coroutine if there's nothing to do.");
+            }
+
+            m_PreviousFlower = m_CurrentFlower;
             m_GroundedActions.Enable();
             BeeLookOverride.enabled = true;
         }

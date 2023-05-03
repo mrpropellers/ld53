@@ -48,7 +48,9 @@ namespace LeftOut.LudumDare
             {
                 moveInput.y = -moveInput.y;
             }
-            m_Rigidbody.maxAngularVelocity = MaxAngularVelocity;
+
+            var isThrottling = ThrottleAction.action.IsPressed();
+            m_Rigidbody.maxAngularVelocity = isThrottling ? MaxAngularVelocity / 3f : MaxAngularVelocity;
             m_RotationalTorque = new Vector3(moveInput.y, moveInput.x, 0);
 
             m_Speed = ThrottleAction.action.IsPressed() ? CruisingSpeed : BaseSpeed;

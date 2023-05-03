@@ -291,7 +291,7 @@ namespace LeftOut.LudumDare
 
         IEnumerator TakeOff()
         {
-            m_ParticleEmission.rateOverTime = 8;
+            //m_ParticleEmission.rateOverTime = 8;
             if (m_GroundController.DidPollinate)
             {
                 m_CurrentFlower.TakeOff();
@@ -308,7 +308,7 @@ namespace LeftOut.LudumDare
                 tf.DOMove(target.position, time).SetEase(LandingEase);
                 tf.DORotate(target.rotation.eulerAngles, time).SetEase(LandingEase);
             }
-            m_ParticleEmission.rateOverTime = 0.5f;
+            //m_ParticleEmission.rateOverTime = 0.5f;
             m_CurrentFlower = FlowerSensor.ClosestFlower;
             var target = m_CurrentFlower.LandingPointCenter;
             var landingTime = (VisualRigidBody.position - target.position).magnitude / LandingSpeed;

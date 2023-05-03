@@ -48,6 +48,7 @@ namespace LeftOut.LudumDare
             }
             m_IsPaused = !m_IsPaused;
             PauseCamera.enabled = m_IsPaused;
+            m_IsAnimating = true;
             if (m_IsPaused)
             {
                 gameObject.SetActive(true);
@@ -59,17 +60,22 @@ namespace LeftOut.LudumDare
             }
         }
 
+        public void SetFullScreen(bool val)
+        {
+            Screen.fullScreen = val;
+        }
+
         void OnEnable()
         {
             if (!m_StillInStart)
             {
+                m_IsAnimating = true;
                 StartCoroutine(FadeIn());
             }
         }
         
         IEnumerator FadeIn()
         {
-            m_IsAnimating = true;
             DOVirtual.Float(0f, 1f, FadeTime, SetAlphas);
             yield return new WaitForSeconds(FadeTime);
             m_IsAnimating = false;
@@ -77,7 +83,6 @@ namespace LeftOut.LudumDare
 
         public void FadeOut()
         {
-            m_IsAnimating = true;
             DOVirtual.Float(1f, 0f, FadeTime, SetAlphas);
             StartCoroutine(DisableAfter(FadeTime));
         }
@@ -85,9 +90,9 @@ namespace LeftOut.LudumDare
         IEnumerator DisableAfter(float time)
         {
             yield return new WaitForSeconds(time);
-            gameObject.SetActive(false);
             m_IsAnimating = false;
             m_StillInStart = false;
+            gameObject.SetActive(false);
         }
         
 

@@ -11,7 +11,7 @@ using UnityEngine.UI;
 
 namespace LeftOut.LudumDare.Tutorial
 {
-    public class Tutorial : MonoBehaviour, IAtomListener<PlayerInput>, IAtomListener<InputAction.CallbackContext>
+    public class Tutorial : MonoBehaviour, IAtomListener<InputAction.CallbackContext>
     {
         const string k_KeyboardName = "KeyboardMouse";
         const string k_GamepadName = "Gamepad";
@@ -154,6 +154,8 @@ namespace LeftOut.LudumDare.Tutorial
         bool IsPlayingPrompt => m_ActivePrompt != null;
 
         [SerializeField]
+        PlayerInput PlayerInput;
+        [SerializeField]
         Image PromptBackground;
         [SerializeField]
         TextMeshProUGUI PromptBox;
@@ -175,8 +177,8 @@ namespace LeftOut.LudumDare.Tutorial
         void Start()
         {
             Debug.Log("Resetting all Tutorial prompts.");
-            ControlSchemeChanged.RegisterListener(this);
-            PlayerActionTaken.RegisterListener(this);
+            m_CurrentControlScheme = PlayerInput.currentControlScheme;
+            Debug.Log($"Current scheme: {m_CurrentControlScheme}");
             m_ActivePrompt = null;
             foreach (var prompt in Prompts)
             {
@@ -188,10 +190,16 @@ namespace LeftOut.LudumDare.Tutorial
             m_PromptsWaiting = new Queue<Prompt>();
         }
 
+        void OnEnable()
+        {
+            PlayerInput.onControlsChanged += HandleControlsChange;
+            PlayerActionTaken.RegisterListener(this);
+        }
+
         void OnDisable()
         {
             Debug.Log("Unregistering callbacks");
-            ControlSchemeChanged?.UnregisterListener(this);
+            PlayerInput.onControlsChanged -= HandleControlsChange;
             PlayerActionTaken?.UnregisterListener(this);
             foreach (var prompt in Prompts)
             {
@@ -199,7 +207,7 @@ namespace LeftOut.LudumDare.Tutorial
             }
         }
 
-        public void OnEventRaised(PlayerInput playerInput)
+        public void HandleControlsChange(PlayerInput playerInput)
         {
             Debug.Log(
                 $"Control scheme changing from {m_CurrentControlScheme} to {playerInput.currentControlScheme}");

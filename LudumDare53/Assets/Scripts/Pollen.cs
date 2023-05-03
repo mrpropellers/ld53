@@ -9,7 +9,7 @@ namespace LeftOut.LudumDare
     public class Pollen
     {
         public enum ColorNames { Purple, Pink, Red, Orange, Yellow, White };
-        public static string[] HexList = { "#AC92EC", "#EC87C0", "#ED5565", "#FC6E51", "#FFCE54", "#F5F7FA" };
+        public static string[] HexList = { "#AC92EC", "#EC87C0", "#ED5565", "#FC6E51", "#FFCE54", "#FFFEE6" };
 
         public Dictionary<ColorNames, string> ColorNameToHex = new Dictionary<ColorNames, string>()
         {

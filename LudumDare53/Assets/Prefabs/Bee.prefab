@@ -254,8 +254,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1539257056}
-  m_LocalRotation: {x: -0.028676366, y: -0.9712842, z: 0.1713939, w: -0.16250817}
-  m_LocalPosition: {x: -0.39000005, y: 0.5300002, z: 1.21}
+  m_LocalRotation: {x: -0.028675623, y: -0.9712849, z: 0.17139386, w: -0.16250408}
+  m_LocalPosition: {x: -0.3899808, y: 0.52999973, z: 1.2100064}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -378,7 +378,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 7062071218971153879}
+  m_Father: {fileID: 856066417763975086}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
 --- !u!198 &8087824846754676241
@@ -5184,8 +5184,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1726071572732789593}
-  m_LocalRotation: {x: 0.15381782, y: 0.00000004470348, z: -0.000000005587935, w: 0.9880992}
-  m_LocalPosition: {x: -0.00000035762787, y: 1.79, z: -3.2900016}
+  m_LocalRotation: {x: -0.15381825, y: -0.0000005066395, z: 0.000000074505806, w: -0.98809916}
+  m_LocalPosition: {x: -0.00000333786, y: 1.79, z: -3.2899976}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -5419,13 +5419,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a52a0b58337c4dec8f4588c3b83381de, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_ParticleSystem: {fileID: 8087824846754676241}
+  ParticleSystem: {fileID: 8087824846754676241}
   BodyState: {fileID: 2175169664576230820}
   BeeRoot: {fileID: 7062071217250275354}
   GroundMoveAction: {fileID: -4758858015638054784, guid: 5de5c0b2d094f644ba302b2ed633c422,
     type: 3}
   YawVelocity: 50
   PollinationDance: {fileID: 0}
+  BeeLookOverride: {fileID: 0}
   SuccessfulPollination: {fileID: 0}
 --- !u!114 &1116252582106120871
 MonoBehaviour:
@@ -5759,7 +5760,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 856066417763975086}
-  - {fileID: 2746715295845017092}
   m_Father: {fileID: 7062071217250275354}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -5841,6 +5841,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4393064497269822072}
+  - {fileID: 2746715295845017092}
   m_Father: {fileID: 7062071218971153879}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
